@@ -1,4 +1,4 @@
-package Poker;
+package PokerAgent;
 
 import java.util.ArrayList;
 import java.util.Random;

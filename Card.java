@@ -1,4 +1,4 @@
-package Poker;
+package PokerAgent;
 
 public class Card {
 	
