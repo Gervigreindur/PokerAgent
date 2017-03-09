@@ -2,10 +2,10 @@ package PokerAgent;
 
 public class Player {
 
-	String name;
-	int stack;
-	Card[] cards;
-	boolean fold, turnToDo;
+	private String name;
+	private int stack;
+	private Card[] cards;
+	private boolean fold, turnToDo;
 	
 	Player(String name, int deposit) {
 		this.name = name;

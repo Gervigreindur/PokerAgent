@@ -1,7 +1,6 @@
 package PokerAgent;
 
 public class Card {
-	
 	private int rank, suit;
 	
 	private static String[] suits = { "hearts", "spades", "diamonds", "clubs" };

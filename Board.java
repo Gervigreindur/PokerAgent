@@ -3,13 +3,11 @@ package PokerAgent;
 import java.util.ArrayList;
 
 public class Board {
+	private ArrayList<Player> players;
+	private Deck deck;
+	private boolean preFlop, flop, turn, river;
 	
-	ArrayList<Player> players;
-	Deck deck;
-	boolean preFlop, flop, turn, river;
-	
-	Board(int size) {
-		
+	public Board(int size) {
 		if(size > 8) {
 			throw new IndexOutOfBoundsException("Board size can't be bigger than 8, throwed from Board constructor");
 		}
@@ -17,7 +15,7 @@ public class Board {
 			throw new IndexOutOfBoundsException("Board size has to be a positive number, throwed from Board constructor");
 		}
 		
-		ArrayList<Player> players = new ArrayList<Player>();
+		players = new ArrayList<Player>();
 		deck = new Deck();
 		preFlop = true;
 		flop = turn = river = false;
@@ -65,6 +63,5 @@ public class Board {
 
 	public void addPlayer(Player player) {
 		players.add(player);
-		
 	}
 }
