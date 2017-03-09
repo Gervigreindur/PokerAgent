@@ -38,7 +38,9 @@ public class Board {
 				player.recievesCards(deck.drawFromDeck(), deck.drawFromDeck());
 			}
 		}
-		placeBets();
+		while(betsAreBeingTaken()) {
+			placeBets();
+		}
 		if(flop) {
 			
 		}
@@ -49,6 +51,17 @@ public class Board {
 			
 		}
 	}
+
+	private boolean betsAreBeingTaken() {
+		//Find out if all bets are equal if not return true
+		return false;
+	}
+
+	private void placeBets() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	public void addPlayer(Player player) {
 		players.add(player);
