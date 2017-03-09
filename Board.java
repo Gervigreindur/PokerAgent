@@ -6,6 +6,7 @@ public class Board {
 	
 	ArrayList<Player> players;
 	Deck deck;
+	boolean preFlop, flop, turn, river;
 	
 	Board(int size) {
 		
@@ -18,21 +19,39 @@ public class Board {
 		
 		ArrayList<Player> players = new ArrayList<Player>();
 		deck = new Deck();
-		
+		preFlop = true;
+		flop = turn = river = false;
 	}
 
 	public boolean isActive() {
-		// TODO Auto-generated method stub
+		if(players.size() > 1) {
+			return true;
+		}
 		return false;
 	}
 
 	public void play() {
-		// TODO Auto-generated method stub
-		
+		if(preFlop) {
+			deck.shuffle();
+			
+			for(Player player : players) {
+				player.recievesCards(deck.drawFromDeck(), deck.drawFromDeck());
+			}
+		}
+		placeBets();
+		if(flop) {
+			
+		}
+		else if(turn) {
+			
+		}
+		else if(river){
+			
+		}
 	}
 
 	public void addPlayer(Player player) {
-		// TODO Auto-generated method stub
+		players.add(player);
 		
 	}
 }
