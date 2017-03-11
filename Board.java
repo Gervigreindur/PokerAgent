@@ -10,7 +10,7 @@ public class Board {
 	private ArrayList<Player> playersInGame;
 	private ArrayList<Player> playersInRound;
 	private Integer[] currBetsMadeByPlayer;
-	private Deck deck;
+	public Deck deck;
 	private Card[] table; //mögulega þarf þetta ekki en kannski er betra að geyma það uppá að reikna möguleika hinna leikmannana á vinningi
 	private boolean preFlop, flop, turn, river;
 	private int pot, bigBlind, smallBlind, currBet;
@@ -60,6 +60,7 @@ public class Board {
 		System.out.println("PLAYING HAND #" + handsPlayed);
 		System.out.println("PREFLOP STARTED");
 		deck.shuffle();
+		//deck.getAllCards();
 		
 		//each player gets two cards
 		for(Player player : playersInGame) {

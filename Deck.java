@@ -17,7 +17,7 @@ public class Deck {
 				cards.add(new Card(i,j));
 			}
 		}
-
+		//getAllCards();
 		shuffle();		
 	}
 	
@@ -27,11 +27,11 @@ public class Deck {
 			int index_1 = rand.nextInt(cards.size() - 1);
 			int index_2 = rand.nextInt(cards.size() - 1);
 			
-			Card temp = cards.get(index_1);
+			Card temp = cards.get(index_2);
 			cards.set(index_2, cards.get(index_1));
 			cards.set(index_1, temp);
 		}
-		
+				
 		pivot = 0;
 	}
 	
@@ -44,13 +44,29 @@ public class Deck {
 	
 	public Card drawFromDeck() {
 		Card card = cards.get(pivot);
+		Card tmp = card;
+		cards.remove(pivot);
 		pivot++;
 		
 		if(pivot < 0 || pivot >= cards.size()) {
 			throw new IndexOutOfBoundsException("pivot out of order, " + pivot + " thrown from drawFromDeck() in Deck class");
 		}
 		
-		return card;
+		//System.out.println("Number of cards left: " + getNumberOfCardsInDeck() + " what hand to romve: " + cards.get(pivot));
+		//System.out.println("what card we are returning: " + tmp);
 		
+		return tmp;
+	}
+	
+	public int getNumberOfCardsInDeck() {
+		return cards.size();
+	}
+	
+	public void getAllCards()
+	{
+		for(Card cards1: cards)
+		{
+			System.out.println(cards1);
+		}
 	}
 }
