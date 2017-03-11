@@ -4,20 +4,18 @@ public class Player {
 
 	private String name;
 	private int stack;
-	private Card[] cards;
-	private boolean fold, turnToDo;
+	private Hand hand;
 	private int ID;
 	
 	Player(String name, int deposit) {
 		this.name = name;
 		this.stack = deposit;
 		
-		cards = new Card[2];
+		hand = new Hand();
 	}
 	
-	public void recievesCards(Card first, Card second) {
-		cards[0] = first;
-		cards[1] = second;
+	public void recievesCards(Card card) {
+		hand.addCardToHand(card);
 	}
 	
 	public void madeBet(int amount) {
@@ -32,17 +30,22 @@ public class Player {
 		this.ID = ID;
 	}
 	
+	public void emptyHand() {
+		hand.clearHand();
+	}
+	
 	//Functions to get info to test betting function ===================================================================
 	public String seeCards() {
-		return cards[0].toString() + " and " + cards[1].toString();
+		//TODO: skrifa út spilin í hand
+		return hand.getCards();
 	}
 	
 	public String seeName() {
 		return name;
 	}
 	
-	public String seeStack() {
-		return Integer.toString(stack);
+	public int seeStack() {
+		return stack;
 	}
 	//===================================================================================================================
 }

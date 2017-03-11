@@ -11,9 +11,10 @@ public class Board {
 	private ArrayList<Player> playersInRound;
 	private Integer[] currBetsMadeByPlayer;
 	private Deck deck;
-	private Card[] table;
+	private Card[] table; //mögulega þarf þetta ekki en kannski er betra að geyma það uppá að reikna möguleika hinna leikmannana á vinningi
 	private boolean preFlop, flop, turn, river;
 	private int pot, bigBlind, smallBlind, currBet;
+	private int handsPlayed; //uppá að hækka blinds eftir einhvern tíma...?
 	
 	public Board(int size) {
 		if(size > 8) {
@@ -32,6 +33,7 @@ public class Board {
 		smallBlind = 5;
 		bigBlind = 10;
 		currBet = 0;
+		handsPlayed = 0;
 		deck = new Deck();
 		preFlop = true;
 		flop = turn = river = false;
@@ -54,12 +56,17 @@ public class Board {
 		//* Fylla inní checkForWinner fallið svo það skoði spilin og finni hver er með bestu höndina
 		
 		//Preflop---------------------------------------------------------
+		handsPlayed++;
+		System.out.println("PLAYING HAND #" + handsPlayed);
 		System.out.println("PREFLOP STARTED");
 		deck.shuffle();
 		
+		//each player gets two cards
 		for(Player player : playersInGame) {
-			player.recievesCards(deck.drawFromDeck(), deck.drawFromDeck());
-			System.out.println(player.seeCards());
+			player.recievesCards(deck.drawFromDeck());
+			player.recievesCards(deck.drawFromDeck());
+			
+			System.out.println(player.seeName() + "'s cards:\n" + player.seeCards());
 		}
 		
 		initializeCurrBetsMadeByPlayer();
@@ -70,23 +77,44 @@ public class Board {
 		
 		//flop-----------------------------------------------------------
 		System.out.println("FLOP STARTED");
-		table[0] = deck.drawFromDeck();
-		table[1] = deck.drawFromDeck();
-		table[2] = deck.drawFromDeck();
+		//the cards in flop are added to each player's hand and the the Board stores the table each time...
+		Card card1 = deck.drawFromDeck();
+		Card card2 = deck.drawFromDeck();
+		Card card3 = deck.drawFromDeck();
+		table[0] = card1;
+		table[1] = card2;
+		table[2] = card3;
+		
+		for(Player p : playersInRound) {
+			p.recievesCards(card1);
+			p.recievesCards(card2);
+			p.recievesCards(card3);
+			System.out.println(p.seeName() + "'s cards:\n" + p.seeCards());
+		}
 		initializeCurrBetsMadeByPlayer();
 		placeBets(false);
 		System.out.println("FLOP ENDED");
 	
 		//turn-----------------------------------------------------------
 		System.out.println("TURN STARTED");
-		table[3] = deck.drawFromDeck();
+		Card card4 = deck.drawFromDeck();
+		table[3] = card4;
+		for(Player p : playersInRound) {
+			p.recievesCards(card4);
+			System.out.println(p.seeName() + "'s cards:\n" + p.seeCards());
+		}
 		initializeCurrBetsMadeByPlayer();
 		placeBets(false);
 		System.out.println("TURN ENDED");
 	
 		//river----------------------------------------------------------
 		System.out.println("RIVER STARTED");
-		table[4] = deck.drawFromDeck();
+		Card card5 = deck.drawFromDeck();
+		table[3] = card5;
+		for(Player p : playersInRound) {
+			p.recievesCards(card5);
+			System.out.println(p.seeName() + "'s cards:\n" + p.seeCards());
+		}
 		initializeCurrBetsMadeByPlayer();
 		placeBets(false);
 		System.out.println("RIVER ENDED");
@@ -95,6 +123,11 @@ public class Board {
 		checkForWinner();
 		
 		rearrangePlayers();
+		
+		//empty each players hand
+		for(Player p : playersInRound) {
+			p.emptyHand();
+		}
 		pot = 0;
 		playersInRound.removeAll(playersInRound);
 	}
