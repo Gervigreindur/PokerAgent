@@ -26,6 +26,10 @@ public class Player {
 		return ID;
 	}
 	
+	public Hand getHand() {
+		return hand;
+	}
+	
 	public void setID(int ID) {
 		this.ID = ID;
 	}
@@ -46,6 +50,10 @@ public class Player {
 	
 	public int seeStack() {
 		return stack;
+	}
+	
+	public void addPot(int amount) {
+		stack += amount;
 	}
 	//===================================================================================================================
 }

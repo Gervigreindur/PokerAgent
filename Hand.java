@@ -3,11 +3,11 @@ package PokerAgent;
 import java.util.Arrays;
 
 public class Hand {
-	private Card[] hand;
+	protected Card[] hand;
 	private int pivot;
 	
 	public Hand() {
-		hand = new Card[7];
+		hand = new Card[2];
 		pivot = 0;
 	}
 	
@@ -18,13 +18,16 @@ public class Hand {
 	
 	public void clearHand() {
 		Arrays.fill(hand, null);
+		pivot = 0;
 	}
+	
+	
 	
 	public String getCards() {
 		String result = "";
 		for(Card c : hand) {
 			if(c != null) {
-				result += c.toString() + "\n";
+				result += c.toString() + " ";
 			}
 		}
 		return result;
