@@ -95,10 +95,9 @@ public class Board {
 				table[2] = card3;
 				
 				for(Player p : playersInRound) {
-					/*
 					p.recievesCards(card1);
 					p.recievesCards(card2);
-					p.recievesCards(card3);*/
+					p.recievesCards(card3);
 					System.out.println(p.seeName() + "'s cards: " + p.seeCards());
 				}
 				System.out.print("Table:: ");
@@ -123,7 +122,7 @@ public class Board {
 				Card card4 = deck.drawFromDeck();
 				table[3] = card4;
 				for(Player p : playersInRound) {
-					//p.recievesCards(card4);
+					p.recievesCards(card4);
 					System.out.println(p.seeName() + "'s cards: " + p.seeCards());
 				}
 				System.out.print("Table:: ");
@@ -148,20 +147,22 @@ public class Board {
 				Card card5 = deck.drawFromDeck();
 				table[4] = card5;
 				for(Player p : playersInRound) {
-					//p.recievesCards(card5);
+					p.recievesCards(card5);
 					System.out.println(p.seeName() + "'s cards: " + p.seeCards());
 				}
+				
 				System.out.print("Table:: ");
 				for(int i = 0; i < 5; i++) {
 					System.out.print(table[i] + " - ");
 				}
+				
 				System.out.println("");
 				initializeCurrBetsMadeByPlayer();
 				placeBets(false);
 				System.out.println("RIVER ENDED");
 				river = false;
 				preFlop = true;
-				if(checkForWinner()) {
+				if(/*checkForWinner()*/true) {
 					break;
 				}
 			}
@@ -171,6 +172,7 @@ public class Board {
 		
 		//empty each players hand
 		for(Player p : playersInGame) {
+			System.out.println("EMPTYING HAND");
 			p.emptyHand();
 		}
 		pot = 0;
@@ -190,7 +192,7 @@ public class Board {
 			ArrayList<Player> winners = new ArrayList<Player>();
 			//Evaluate best hand 
 			for(Player player : playersInRound) {
-				int value = Evaluator.evaluate(table, player.getHand());
+				int value = player.getHandValue();
 				if(value == best) {
 					winners.add(player);
 				}

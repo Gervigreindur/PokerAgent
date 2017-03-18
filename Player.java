@@ -55,5 +55,9 @@ public class Player {
 	public void addPot(int amount) {
 		stack += amount;
 	}
+	
+	public int getHandValue() {
+		return hand.valueOfHand();
+	}
 	//===================================================================================================================
 }
