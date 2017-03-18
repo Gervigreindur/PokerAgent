@@ -60,4 +60,9 @@ public class Player {
 		return hand.valueOfHand();
 	}
 	//===================================================================================================================
+
+	public String getInput() {
+		
+		return null;
+	}
 }

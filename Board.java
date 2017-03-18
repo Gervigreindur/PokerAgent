@@ -1,21 +1,21 @@
 package PokerAgent;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
+	
+
 	private ArrayList<Player> playersInGame;
 	private ArrayList<Player> playersInRound;
 	private Integer[] currBetsMadeByPlayer;
 	public Deck deck;
 	private Card[] table; //mögulega þarf þetta ekki en kannski er betra að geyma það uppá að reikna möguleika hinna leikmannana á vinningi
 	private boolean preFlop, flop, turn, river;
-	private int pot, bigBlind, smallBlind, currBet;
+	private int pot, bigBlind, smallBlind, currBet; 
+	protected int size;
 	private int handsPlayed; //uppá að hækka blinds eftir einhvern tíma...?
-	
+
 	public Board(int size) {
 		if(size > 8) {
 			throw new IndexOutOfBoundsException("Board size can't be bigger than 8, throwed from Board constructor");
@@ -23,10 +23,27 @@ public class Board {
 		if(size < 0) {
 			throw new IndexOutOfBoundsException("Board size has to be a positive number, throwed from Board constructor");
 		}
-		
+		this.size = size;
 		playersInGame = new ArrayList<Player>();
 		playersInRound = new ArrayList<Player>();
 		currBetsMadeByPlayer = new Integer[size];
+		table = new Card[5];
+		
+		pot = 0;
+		smallBlind = 5;
+		bigBlind = 10;
+		currBet = 0;
+		handsPlayed = 0;
+		deck = new Deck();
+		preFlop = true;
+		flop = turn = river = false;
+	}
+	
+	public Board(Board board) {
+		
+		playersInGame = new ArrayList<Player>();
+		playersInRound = new ArrayList<Player>();
+		currBetsMadeByPlayer = new Integer[board.size];
 		table = new Card[5];
 		
 		pot = 0;
@@ -262,15 +279,8 @@ public class Board {
 				Player currPlayer = playersInRound.get(i);
 				System.out.println("pot size is: " + pot);
 				System.out.println(currPlayer.seeName() + ", place your bets..\n1 to check/call\t\t2 to raise\t\t3 to fold");
-				BufferedReader buffer=new BufferedReader(new InputStreamReader(System.in));
-				String playerChoice = "";
 				
-				try {
-					playerChoice = buffer.readLine();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				String playerChoice = currPlayer.getInput();
 
 				if(playerChoice.equals("2")) {
 					//raise
@@ -321,5 +331,9 @@ public class Board {
 	public void addPlayer(Player player) {
 		playersInGame.add(player);
 		player.setID(playersInGame.size() - 1);
+	}
+	
+	public Board getBoard() {
+		return this;
 	}
 }

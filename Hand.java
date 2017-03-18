@@ -32,7 +32,7 @@ public class Hand {
 	public String getCards() {
 		//TODO:
 		//bæta við villumeðhöndlun
-		return hand[0].toString() + "\n" + hand[1].toString();
+		return "\n" + hand[0].toString() + "\n" + hand[1].toString();
 	}
 	
 	//snú við öllum forlykkjum sem fara í gegnum hand...
