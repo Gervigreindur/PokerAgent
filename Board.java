@@ -189,7 +189,6 @@ public class Board {
 		
 		//empty each players hand
 		for(Player p : playersInGame) {
-			System.out.println("EMPTYING HAND");
 			p.emptyHand();
 		}
 		pot = 0;
