@@ -29,15 +29,10 @@ public class Hand {
 	}
 	
 	public String getCards() {
-		sortHand();
-		//TODO:
-		//bæta við villumeðhöndlun
-		//return "\n" + hand[0].toString() + "\n" + hand[1].toString();
-		
 		String result = "";
 		for(Card c : hand) {
 			if(c != null) {
-				result += c.toString() + "\n";
+				result += c.toString() + " - ";
 			}
 		}
 		
@@ -49,53 +44,82 @@ public class Hand {
 		
 		if(isRoyalFlush()) {
 			System.out.println("ROYAL FLUSH");
-			//can return value 248
-			return 248;
+
+			return 900;
 		}
 		else if(isStraightFlush()) {
-			System.out.println("STRAIGHT FLUSH");
-			//can return value from 238 to 247
-			return 9;
+			// 800 + (279JA = 14, 23567 = 7)
+			System.out.println("STRAIGHT FLUSH " + (firstMatch.getRank() + 2) + "high");
+
+			return 800 + firstMatch.getRank() + 2;
 		}
 		else if(isFourOfKind()) {
-			System.out.println("FOUR OF A KIND " + firstMatch.toString());
-			//can return value from 224 to 237
-			return 8;
+			// 700 + (AAAA = 14, 5555 = 5) + highCard
+			System.out.println("FOUR OF A KIND " + (firstMatch.getRank() + 2) + "s");
+
+			return 700 + firstMatch.getRank() + 2 + getHighCard(firstMatch, null).getRank() + 2;
 		}
 		else if(isFullHouse()) {
-			System.out.println("FULL HOUSE " + firstMatch.toString() + " and " + secondMatch.toString());
-			//can return value from 145 to 223
-			return 7;
+			// "When comparing full houses, the rank of the three cards determines which is higher. For example 9-9-9-4-4 beats 8-8-8-A-A"
+			// 600 + (KKK AA = 13, AAA KK = 14)
+			System.out.println("FULL HOUSE " + (firstMatch.getRank() + 2) + "s on " + (secondMatch.getRank() + 2));
+
+			return 600 + firstMatch.getRank() + 2;
 		}
 		else if(isFlush()) {
-			System.out.println("FLUSH " + firstMatch.toString() + " high");
-			//can return value from 131 to 144
-			return 6;
+			// 500 + (279JA = 14, 23567 = 7)
+			System.out.println("FLUSH " + (firstMatch.getRank() + 2) + " high");
+			
+			return 500 + firstMatch.getRank() + 2;
 		}
 		else if(isStraight()) {
-			System.out.println("STRAIGHT " + firstMatch.toString() + " high");
-			//can return value from 121 to 130
-			return 5;
+			// 400 + (23456 = 6, 10JQKA = 14)
+			System.out.println("STRAIGHT " + (firstMatch.getRank() + 2) + " high");
+
+			return 400 + firstMatch.getRank() + 2;
 		}
 		else if(isThreeOfKind()) {
-			System.out.println("THREE OF A KIND of " + firstMatch.toString());
-			//can return value from 107 to 120
-			return 4;
+			//300 + (KKK = 13, 777 = 7) + highCard
+			System.out.println("THREE OF A KIND of " + (firstMatch.getRank() + 2) + "s");
+
+			return 300 + firstMatch.getRank() + 2 + getHighCard(firstMatch, null).getRank() + 2;
 		}
 		else if(isTwoPairs()) {
-			System.out.println("TWO PAIRS of " + firstMatch.toString() + " and " + secondMatch.toString());
-			//can return value from 28 to 106
-			return 3;
+			//200 + (KK AA = 13 + 14 = 27, 77 88 = 7 + 8 = 15) + highCard
+			System.out.println("TWO PAIRS of " + (firstMatch.getRank() + 2) + "s and " + (secondMatch.getRank() + 2) + "s");
+			
+			return 200 + firstMatch.getRank() + 2 + secondMatch.getRank() + 2 + getHighCard(firstMatch, secondMatch).getRank() + 2;
 		}
 		else if(isPair()) {
-			System.out.println("PAIR of " + firstMatch.toString());
-			//can return value from 15 to 27
-			return 2;
+			//there are 13 different pairs. the value of the pair is 100 + the rank of the pair(KK = 12, 88 = 8) plus the value of the highcard
+			System.out.println("PAIR of " + (firstMatch.getRank() + 2) + "s");
+
+			return 100 + firstMatch.getRank() + 2 + getHighCard(firstMatch, null).getRank() + 2;
 		}
 		else {
+			//1-13
+			//we add two to the result since the cards' rank is stored in an array so the rank of 2 would be 0 but we want it to be 2
 			System.out.println("HIGH CARD");
-			return highCard();
+			return highCard() + 2;
 		}
+	}
+
+	private Card getHighCard(Card first, Card second) {
+		for(int i = 0; i < hand.length; i++) {
+			if(second == null) {
+				//if 'second' is null we only have to check if the card has the same rank as 'first'
+				if(hand[i].getRank() != first.getRank()) {
+					return hand[i];
+				}
+			}
+			else {
+				//if 'second' is not null we need to make sure that the card does not have the same rank as 'first' and 'second'
+				if(hand[i].getRank() != first.getRank() && hand[i].getRank() != second.getRank()) {
+					return hand[i];
+				}
+			}
+		}
+		return null;
 	}
 
 	private void sortHand() {

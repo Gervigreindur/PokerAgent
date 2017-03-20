@@ -179,7 +179,7 @@ public class Board {
 				System.out.println("RIVER ENDED");
 				river = false;
 				preFlop = true;
-				if(/*checkForWinner()*/true) {
+				if(checkForWinner()) {
 					break;
 				}
 			}
@@ -196,10 +196,12 @@ public class Board {
 	}
 
 	private boolean checkForWinner() {
+		System.out.println("CHECKING FOR WINNER");
 		if(playersInRound.size() == 1) {
 			for(Player player : playersInRound) {
 				player.addPot(pot);
 			}
+			
 			return true;
 		}
 		else if(river) {
@@ -232,6 +234,7 @@ public class Board {
 			for(Player player : winners) {
 				player.addPot(potDivided);
 			}
+			
 			return true;
 		}
 		
