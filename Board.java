@@ -193,6 +193,7 @@ public class Board {
 		}
 		pot = 0;
 		playersInRound.removeAll(playersInRound);
+		deck = new Deck();
 	}
 
 	private boolean checkForWinner() {
