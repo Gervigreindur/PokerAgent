@@ -2,27 +2,18 @@ package PokerAgent;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Agent extends Player {
-
+public class RandomAgent extends Player {
 	State environment;
 	Board board;
-	Agent(String name, int deposit, Board board) {
+	RandomAgent(String name, int deposit, Board board) {
 		super(name, deposit);
 		this.board = new Board(board);
 		environment = new State(this, board);
 	}
 	
 	public String getInput() {
-		environment.update();
-		Integer value = monteCarloSimulation();
-
+		Integer value = ThreadLocalRandom.current().nextInt(1, 4);
 		return value.toString();
 	}
-	
-	public int monteCarloSimulation() {
-		
-		return ThreadLocalRandom.current().nextInt(1, 4); 
-	}
-
 	
 }
