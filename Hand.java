@@ -2,8 +2,6 @@ package PokerAgent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Hand {
 	private Card[] hand;
@@ -30,6 +28,10 @@ public class Hand {
 	
 	public Card[] getHand() {
 		return hand;
+	}
+	
+	public int getNumberOfCardsOnPlayer() {
+		return pivot;
 	}
 	
 	public String getCards() {
@@ -139,11 +141,11 @@ public class Hand {
 		}
 	}
 
-	private int highCard() {
+	public int highCard() {
 		return hand[0].getRank();
 	}
 
-	private boolean isPair() {
+	public boolean isPair() {
 		firstMatch = null;
 		
 		for(int i = 0; i < hand.length - 1; i++) {
@@ -156,7 +158,7 @@ public class Hand {
 		return firstMatch != null;
 	}
 
-	private boolean isTwoPairs() {
+	public boolean isTwoPairs() {
 		firstMatch = null;
 		secondMatch = null;
 		
@@ -175,7 +177,7 @@ public class Hand {
 		return firstMatch != null && secondMatch != null;
 	}
 
-	private boolean isThreeOfKind() {
+	public boolean isThreeOfKind() {
 		firstMatch = null;
 		
 		for(int i = 0; i < hand.length - 2; i++) {
@@ -188,7 +190,7 @@ public class Hand {
 		return firstMatch != null;
 	}
 
-	private boolean isStraight() {
+	public boolean isStraight() {
 		firstMatch = null;
 		
 		ArrayList<Card> dupRemoved = new ArrayList<Card>();
@@ -213,7 +215,7 @@ public class Hand {
 		return firstMatch != null;
 	}
 
-	private boolean isFlush() {
+	public boolean isFlush() {
 		firstMatch = null;
 		
 		int hearts = 0;
@@ -269,7 +271,7 @@ public class Hand {
 		return firstMatch != null;
 	}
 
-	private boolean isFullHouse() {
+	public boolean isFullHouse() {
 		firstMatch = null;
 		secondMatch = null;
 		
@@ -285,7 +287,7 @@ public class Hand {
 		return firstMatch != null && secondMatch != null;
 	}
 
-	private boolean isFourOfKind() {
+	public boolean isFourOfKind() {
 		firstMatch = null;
 		
 		for(int i = 0; i < hand.length - 3; i++) {
@@ -297,7 +299,7 @@ public class Hand {
 		return firstMatch != null;
 	}
 
-	private boolean isStraightFlush() {
+	public boolean isStraightFlush() {
 		firstMatch = null;
 		
 		ArrayList<Card> hearts = new ArrayList<Card>();
@@ -336,13 +338,13 @@ public class Hand {
 		return firstMatch != null;
 	}
 
-	private boolean isRoyalFlush() {
+	public boolean isRoyalFlush() {
 		firstMatch = null;
 		
 		return isStraightFlush() && firstMatch.getRank() == 12;
 	}
 	
-	private void getStraight(ArrayList<Card> tmpHand) {
+	public void getStraight(ArrayList<Card> tmpHand) {
 		for(int i = 0; i <= tmpHand.size() - 5; i++) {
 			if(tmpHand.get(i).getRank()-1 == tmpHand.get(i+1).getRank() &&
 					tmpHand.get(i+1).getRank()-1 == tmpHand.get(i+2).getRank() &&

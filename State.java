@@ -63,6 +63,9 @@ public class State {
 		turn = state.turn;
 		river = state.river;
 	}
+	public int getNumberOfPLayersInRound() {
+		return playersInRound.size();
+	}
 	
 	private void incrementCurrPlayer() {
 		for(int i = 0; i < playersInRound.size(); i++) {
