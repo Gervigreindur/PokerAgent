@@ -34,12 +34,13 @@ public class MonteCarloSimulation {
 	}
 	
 	public int simulateAction(State simmi, int action) {
-		
+		/*
+		 * todo: return amount bet by player.
 		if(simmi.isTerminal()) {
-			//todo return amount bet by player.
+			
 			return 0;
 		}
-		
+		*/
 		State simulation = new State(simmi);
 		simulation.takeAction(action);
 		
@@ -58,6 +59,8 @@ public class MonteCarloSimulation {
 		else if(decision == foldProb) {
 			return simulateAction(simulation, 3);
 		}
+		
+		return 0;
 		
 		
 	}
