@@ -17,7 +17,10 @@ public class Hand {
 	}
 	
 	public Hand(Hand hand) {
-		this.hand = hand.getHand();
+		this.hand = new Card[7];
+		for(int i = 0; i < hand.getHand().length; i++) {
+			this.hand[i] = hand.getHand()[i];
+		}
 		this.pivot = hand.pivot;
 		this.firstMatch = hand.firstMatch;
 		this.secondMatch = hand.secondMatch;
@@ -156,14 +159,17 @@ public class Hand {
 		firstMatch = null;
 		
 		for(int i = 0; i < hand.length - 1; i++) {
-			if(hand[i].getRank() == hand[i+1].getRank()) {
-				firstMatch = hand[i];
-				break;
-			}
+			if(hand[i+1] != null) {
+				if(hand[i].getRank() == hand[i+1].getRank()) {
+					firstMatch = hand[i];
+					break;
+				}
+			}			
 		}
 		
 		return firstMatch != null;
 	}
+	
 
 	public boolean isTwoPairs() {
 		firstMatch = null;

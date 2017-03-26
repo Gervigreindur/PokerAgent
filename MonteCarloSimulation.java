@@ -6,7 +6,7 @@ public class MonteCarloSimulation {
 	
 	private Board myBoard;
 	private Player me;
-	private int result;
+
 	private int numberOfSimulations;
 	private int check;
 	private int raise;
@@ -21,10 +21,7 @@ public class MonteCarloSimulation {
 	
 	public int simulate() {
 		
-		
-	
 		for(int i = 0; i < numberOfSimulations; i++) {
-			
 			State simulation = new State(myBoard, me);
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
@@ -41,17 +38,16 @@ public class MonteCarloSimulation {
 	}
 	
 	public int simulateAction(State simmi, int action) {
-		/*
-		 * TODO: return amount bet by player.
+		
 		if(simmi.isTerminal()) {
-			
-			return 0;
+			return simmi.terminal(me);
 		}
-		*/
+		
 		State simulation = new State(simmi);
 		simulation.takeAction(action);
 		
-		double prob = propabilityWinPercentage(simulation.getCurrPlayHands());
+		//double prob = propabilityWinPercentage(simulation.getCurrPlayHands());
+		double prob = 50.4;
 		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
 		
 		prob -= (numberOfPeopleInRound * 7.75);
@@ -120,7 +116,7 @@ public class MonteCarloSimulation {
 		}
 		else if(hand.getNumberOfCardsOnPlayer() == 5)
 		{
-			if(hand.isRoyalFlush()) {
+			/*if(hand.isRoyalFlush()) {
 				return 100;
 			}
 			else if(hand.isStraightFlush()) {
@@ -140,7 +136,7 @@ public class MonteCarloSimulation {
 			}
 			else if(hand.isThreeOfKind()) {
 				return 0;
-			}
+			}*/
 			if(hand.isPair()) {
 				return 0;
 			}
@@ -150,7 +146,7 @@ public class MonteCarloSimulation {
 		}
 		else if(hand.getNumberOfCardsOnPlayer() == 6)
 		{
-			if(hand.isRoyalFlush()) {
+			/*if(hand.isRoyalFlush()) {
 				return 100;
 			}
 			else if(hand.isStraightFlush()) {
@@ -170,7 +166,7 @@ public class MonteCarloSimulation {
 			}
 			else if(hand.isThreeOfKind()) {
 				return 50;
-			}
+			}*/
 			if(hand.isPair()) {
 				return 30;
 			}
@@ -180,7 +176,7 @@ public class MonteCarloSimulation {
 		}
 		else
 		{
-			if(hand.isRoyalFlush()) {
+			/*if(hand.isRoyalFlush()) {
 				return 100;
 			}
 			else if(hand.isStraightFlush()) {
@@ -200,7 +196,7 @@ public class MonteCarloSimulation {
 			}
 			else if(hand.isThreeOfKind()) {
 				return 50;
-			}
+			}*/
 			if(hand.isPair()) {
 				return 30;
 			}
