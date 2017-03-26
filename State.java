@@ -6,11 +6,11 @@ import java.util.Arrays;
 public class State {
 	
 	private ArrayList<Player> playersInRound;
-	protected Integer[] currBetsMadeByPlayer;
 	public Deck deck;
 	private Card[] table; //mögulega þarf þetta ekki en kannski er betra að geyma það uppá að reikna möguleika hinna leikmannana á vinningi
 	protected boolean preFlop, flop, turn, river;
-	private int bigBlind, smallBlind, currPlayerId;  
+	private int bigBlind, smallBlind;
+	private Player currPlayer;
 	protected int size, pot, currBet;
 
 	public State(State state) {
@@ -21,15 +21,12 @@ public class State {
 			Player newPlaya = new Player(p.seeName(), p.seeStack());
 			playersInRound.add(newPlaya);
 		}
-		
-		currBetsMadeByPlayer = new Integer[state.size];
-		for(Player p : playersInRound) {
-			currBetsMadeByPlayer[p.getID()] = state.currBetsMadeByPlayer[p.getID()];
-		}
+				
 		for(int i = 0; i < 5; i++) {
 			table[i] = new Card(state.getTable()[i].getSuit(), state.getTable()[i].getRank());
 		}
-				
+		
+		this.currPlayer = new Player(currPlayer);	
 		pot = state.pot;
 		smallBlind = 5;
 		bigBlind = 10;
@@ -41,51 +38,42 @@ public class State {
 		river = state.river;
 	}
 	
-	public State(Board state, int playerID) {
+	public State(Board board, Player currPlayer) {
 		
 		playersInRound = new ArrayList<Player>();
 		
-		for(Player p : state.getPlayers()) {
+		for(Player p : board.getPlayers()) {
 			Player newPlaya = new Player(p.seeName(), p.seeStack());
 			playersInRound.add(newPlaya);
 		}
 		
-		currBetsMadeByPlayer = new Integer[state.size];
-		for(Player p : playersInRound) {
-			currBetsMadeByPlayer[p.getId()] = state.currBetsMadeByPlayer[p.getID()];
-		}
-		
 		for(int i = 0; i < 5; i++) {
-			table[i] = new Card(state.getTable()[i].getSuit(), state.getTable()[i].getRank());
+			table[i] = new Card(board.getTable()[i].getSuit(), board.getTable()[i].getRank());
 		}
 		
-		currPlayerId = playerID;	
-		pot = state.pot;
+		this.currPlayer = new Player(currPlayer);	
+		pot = board.pot;
 		smallBlind = 5;
 		bigBlind = 10;
-		currBet = state.currBet;
+		currBet = board.currBet;
 		deck = new Deck();
-		preFlop = state.preFlop;
-		flop = state.flop;
-		turn = state.turn;
-		river = state.river;
+		preFlop = board.preFlop;
+		flop = board.flop;
+		turn = board.turn;
+		river = board.river;
 	}
 	
 	private void incrementCurrPlayer() {
 		for(int i = 0; i < playersInRound.size(); i++) {
-			if(playersInRound.get(i).getID() == currPlayerId) {
+			if(playersInRound.get(i).getID() == currPlayer.getID()) {
 				if(i+1 != playersInRound.size()) {
-					currPlayerId = playersInRound.get(i+1).getID();
+					currPlayer = new Player(playersInRound.get(i+1));
 				}
 				else {
-					currPlayerId = playersInRound.get(0).getID();	
+					currPlayer = new Player(playersInRound.get(0));
 				}
 			}
 		}
-	}
-
-	private void initializeCurrBetsMadeByPlayer() {
-		Arrays.fill(currBetsMadeByPlayer, 0);
 	}
 	
 	private boolean cardsExist(Card c, Player agent) {
@@ -115,37 +103,25 @@ public class State {
 	}
 	
 	public Hand getCurrPlayHands() {
-		for(Player player : playersInRound) {
-			if(player.getID() == currPlayerId) {
-				return player.getHand();
-			}
-		}
-		System.out.println("getCurrPlayerHands not working!");
-		return null;
+		return currPlayer.getHand();
 	}
 	
 	public void takeAction(int action) {
 		incrementCurrPlayer();
 		if(action == 1) {
-			int diff = currBet - currBetsMadeByPlayer[currPlayerId];
+			int diff = currBet - currPlayer.getCurrBet();
 			if(diff > 0) {
-				for(Player p : playersInRound) {
-					if(p.getID() == currPlayerId) {
-						playersInRound.get(currPlayerId).madeBet(diff);
-						currBetsMadeByPlayer[currPlayerId] = currBet;
-						pot += diff;
-					}
-				}
+					currPlayer.madeBet(diff);
+					pot += diff;
 			}
 		}
 		else if(action == 2) {
 			currBet += bigBlind;
-			currBetsMadeByPlayer[currPlayerId] += bigBlind;
-			playersInRound.get(currPlayerId).madeBet(bigBlind);
-			pot += bigBlind;
+			currPlayer.madeBet(currBet);
+			pot += currBet;
 		}
 		else {
-			playersInRound.remove(playersInRound.get(currPlayerId));
+			playersInRound.remove(currPlayer);
 		}
 	}
 
@@ -195,7 +171,7 @@ public class State {
 		return false;
 	}
 
-
+/*
 	private void placeBets(boolean betMade) {
 		if(playersInRound.isEmpty()) {
 			playersInRound.addAll(playersInGame);
@@ -249,7 +225,7 @@ public class State {
 		
 		currBet = 0;
 	}
-	
+	*/
 	public Card[] getTable() {
 		return table;
 	}
@@ -257,5 +233,7 @@ public class State {
 		return this;
 	}
 	
-	
+	public ArrayList<Player> getPlayers() {
+		return playersInRound;
+	}
 }

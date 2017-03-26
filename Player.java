@@ -17,6 +17,14 @@ public class Player {
 		currBet = 0;
 	}
 	
+	Player(Player p) {
+		this.name = p.seeName();
+		this.stack = p.seeStack();
+		this.hand = new Hand(p.getHand());
+		this.currBet = p.getCurrBet();
+		this.ID = p.getID();
+	}
+	
 	public int getCurrBet() {
 		return currBet;
 	}

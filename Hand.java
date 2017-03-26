@@ -18,6 +18,13 @@ public class Hand {
 		secondMatch = null;
 	}
 	
+	public Hand(Hand hand) {
+		this.hand = hand.getHand();
+		this.pivot = hand.pivot;
+		this.firstMatch = hand.firstMatch;
+		this.secondMatch = hand.secondMatch;
+	}
+	
 	public void addCardToHand(Card card) {
 		hand[pivot] = card;
 		pivot++;

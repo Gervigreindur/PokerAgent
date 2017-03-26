@@ -19,7 +19,7 @@ public class Agent extends Player {
 		
 		MonteCarloSimulation mcts = new MonteCarloSimulation(this, board);
 		
-		return mcts.result(); 
+		return mcts.simulate(); 
 	}
 
 	

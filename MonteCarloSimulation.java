@@ -17,13 +17,13 @@ public class MonteCarloSimulation {
 		raise = 0;
 	}
 	
-	public void simulate() {
+	public int simulate() {
 		
 		
 	
 		for(int i = 0; i < numberOfSimulations; i++) {
 			
-			State simulation = new State(myBoard, me.getID());
+			State simulation = new State(myBoard, me);
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 			check += simulateAction(simulation, 1);
@@ -32,13 +32,15 @@ public class MonteCarloSimulation {
 		}
 		
 		check = check / numberOfSimulations;
-		raise = raise / numberOfSimulations; 
+		raise = raise / numberOfSimulations;
+		
+		return Math.max(check, raise);
 			
 	}
 	
 	public int simulateAction(State simmi, int action) {
 		/*
-		 * todo: return amount bet by player.
+		 * TODO: return amount bet by player.
 		if(simmi.isTerminal()) {
 			
 			return 0;
@@ -78,10 +80,6 @@ public class MonteCarloSimulation {
 	
 	private int propabilityOfRaise(Hand hand) {
 		return 11;
-	}
-	
-	public int result() {
-		return result;
 	}
 	
 }

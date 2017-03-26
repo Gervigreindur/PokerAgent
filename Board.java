@@ -1,7 +1,6 @@
 package PokerAgent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Board {
 	
@@ -177,9 +176,10 @@ public class Board {
 				initializeCurrBetsMadeByPlayer();
 				placeBets(false);
 				System.out.println("RIVER ENDED");
-				river = false;
+				
 				preFlop = true;
 				if(checkForWinner()) {
+					river = false;
 					break;
 				}
 			}
@@ -191,6 +191,7 @@ public class Board {
 		for(Player p : playersInGame) {
 			p.emptyHand();
 		}
+		
 		pot = 0;
 		playersInRound.removeAll(playersInRound);
 		deck = new Deck();
@@ -201,6 +202,7 @@ public class Board {
 		if(playersInRound.size() == 1) {
 			for(Player player : playersInRound) {
 				player.addPot(pot);
+				System.out.println(player.seeName() + " won " + pot + "$, Congratulations");
 			}
 			
 			return true;
@@ -226,6 +228,7 @@ public class Board {
 				for(Player player : playersInRound) {
 					if(player.getID() == winnerID) {
 						player.addPot(pot);
+						System.out.println(player.seeName() + " won " + pot + "$, Congratulations");
 						return true;
 					}
 				}
@@ -233,6 +236,7 @@ public class Board {
 			// If we need to divide the pot 
 			int potDivided = pot / winners.size();
 			for(Player player : winners) {
+				System.out.println(player.seeName() + " splits the pot and gets " + potDivided + "$ from total pot: " + pot + ", Congratulations");
 				player.addPot(potDivided);
 			}
 			
