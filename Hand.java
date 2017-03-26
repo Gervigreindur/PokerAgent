@@ -234,7 +234,6 @@ public class Hand {
 		Card diamond = null;
 		Card club = null;
 		
-		
 		for(int i = 0; i < hand.length; i++) {
 			if(hand[i].getSuit() == 0) {
 				hearts++;

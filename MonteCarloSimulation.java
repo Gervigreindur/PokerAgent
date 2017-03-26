@@ -51,7 +51,7 @@ public class MonteCarloSimulation {
 		State simulation = new State(simmi);
 		simulation.takeAction(action);
 		
-		double prob = propabilityWinPercentage(simulation.getCurrPlayHands());
+		double prob = propabilityWinPercentage(simulation.getCurrPlayHands(), simulation);
 		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
 		
 		prob -= (numberOfPeopleInRound * 7.75);
@@ -73,7 +73,6 @@ public class MonteCarloSimulation {
 		}
 
 		return 0;
-		
 
 	}
 	
@@ -89,15 +88,17 @@ public class MonteCarloSimulation {
 		return(probOfWinning + getRandVal());
 	}
 	
-	private double propabilityWinPercentage(Hand hand) {
+	private double propabilityWinPercentage(Hand hand, State simulation) {
+		
+		int outsForNext = 0;
+		int numberOfCardsOnPLayer = hand.getNumberOfCardsOnPlayer();
+		int cardOne = hand.getHand()[0].getRank();
+		int rankOne = hand.getHand()[0].getSuit();
+		int cardTwo = hand.getHand()[1].getRank();
+		int rankTwo = hand.getHand()[1].getSuit();
 		
 		if(hand.getNumberOfCardsOnPlayer() == 2)
 		{
-			int cardOne = hand.getHand()[0].getRank();
-			int rankOne = hand.getHand()[0].getSuit();
-			int cardTwo = hand.getHand()[1].getRank();
-			int rankTwo = hand.getHand()[1].getSuit();
-			
 			if(hand.isPair()) { //Pör undir og með 7 og ekki ásapar
 				if(cardOne < 7 && cardOne != 0) {
 					return 59.34;
@@ -115,12 +116,13 @@ public class MonteCarloSimulation {
 				}
 			}
 			else {//sama suit.
-				return 10;
+				return 22;
 			}
 		}
-		else if(hand.getNumberOfCardsOnPlayer() == 5)
+		else if(numberOfCardsOnPLayer == 5)
 		{
-			if(hand.isRoyalFlush()) {
+			
+			if(simulation.getCurrPlayHands().isRoyalFlush()) {
 				return 100;
 			}
 			else if(hand.isStraightFlush()) {
@@ -133,22 +135,37 @@ public class MonteCarloSimulation {
 				return 99;
 			}
 			else if(hand.isFlush()) {
-				return 0;
+				return 99;
 			}
 			else if(hand.isStraight()) {
-				return 0;
+				return 99;
 			}
 			else if(hand.isThreeOfKind()) {
-				return 0;
+				return 80;
 			}
-			if(hand.isPair()) {
-				return 0;
+			else if(hand.isTwoPairs()){
+				outsForNext = 2;
+				if(cardOne < 7 && cardOne != 0 || cardTwo < 7 && cardTwo != 0) {
+					return 65.34 + outsForNext;
+				}
+				else if(cardOne > 7 || cardOne == 0|| cardTwo > 7 || cardTwo == 0){ //Pör yfir 7 og ásar
+					return 77.43 + outsForNext;
+				}
+			}				
+			else if(hand.isPair()) {
+				outsForNext = 4;
+				if(cardOne < 7 && cardOne != 0 || cardTwo < 7 && cardTwo != 0) {
+					return 59.34 + outsForNext;
+				}
+				else if(cardOne > 7 || cardOne == 0|| cardTwo > 7 || cardTwo == 0){ //Pör yfir 7 og ásar
+					return 77.43 + outsForNext;
+				}
 			}
 			else {
-				return 0;
+				return 5;
 			}
 		}
-		else if(hand.getNumberOfCardsOnPlayer() == 6)
+		else if(numberOfCardsOnPLayer == 6)
 		{
 			if(hand.isRoyalFlush()) {
 				return 100;
