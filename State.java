@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class State {
 	
 	private ArrayList<Player> playersInRound;
-	private Integer[] currBetsMadeByPlayer;
+	protected Integer[] currBetsMadeByPlayer;
 	public Deck deck;
 	private Card[] table; //mögulega þarf þetta ekki en kannski er betra að geyma það uppá að reikna möguleika hinna leikmannana á vinningi
 	protected boolean preFlop, flop, turn, river;
@@ -21,8 +21,11 @@ public class State {
 			Player newPlaya = new Player(p.seeName(), p.seeStack());
 			playersInRound.add(newPlaya);
 		}
-		currBetsMadeByPlayer = new Integer[state.size];
 		
+		currBetsMadeByPlayer = new Integer[state.size];
+		for(Player p : playersInRound) {
+			currBetsMadeByPlayer[p.getID()] = state.currBetsMadeByPlayer[p.getID()];
+		}
 		for(int i = 0; i < 5; i++) {
 			table[i] = new Card(state.getTable()[i].getSuit(), state.getTable()[i].getRank());
 		}
@@ -46,7 +49,11 @@ public class State {
 			Player newPlaya = new Player(p.seeName(), p.seeStack());
 			playersInRound.add(newPlaya);
 		}
+		
 		currBetsMadeByPlayer = new Integer[state.size];
+		for(Player p : playersInRound) {
+			currBetsMadeByPlayer[p.getId()] = state.currBetsMadeByPlayer[p.getID()];
+		}
 		
 		for(int i = 0; i < 5; i++) {
 			table[i] = new Card(state.getTable()[i].getSuit(), state.getTable()[i].getRank());
@@ -130,6 +137,15 @@ public class State {
 					}
 				}
 			}
+		}
+		else if(action == 2) {
+			currBet += bigBlind;
+			currBetsMadeByPlayer[currPlayerId] += bigBlind;
+			playersInRound.get(currPlayerId).madeBet(bigBlind);
+			pot += bigBlind;
+		}
+		else {
+			playersInRound.remove(playersInRound.get(currPlayerId));
 		}
 	}
 

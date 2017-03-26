@@ -6,17 +6,20 @@ public class MonteCarloSimulation {
 	private Player me;
 	private int result;
 	private int numberOfSimulations;
+	private int check;
+	private int raise;
 
 	public MonteCarloSimulation(Player agent, Board board) {
 		myBoard = new Board(board);
 		me = agent;
 		numberOfSimulations = 1000;
+		check = 0;
+		raise = 0;
 	}
 	
 	public void simulate() {
 		
-		int check = 0;
-		int raise = 0;
+		
 	
 		for(int i = 0; i < numberOfSimulations; i++) {
 			
