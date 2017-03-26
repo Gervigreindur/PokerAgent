@@ -102,10 +102,19 @@ public class State {
 						player.recievesCards(deck.drawFromDeck());
 						counter++;
 					}
-				}
-				
+				}			
 			}
 		}
+	}
+	
+	public Hand getCurrPlayHands() {
+		for(Player player : playersInRound) {
+			if(player.getID() == currPlayerId) {
+				return player.getHand();
+			}
+		}
+		System.out.println("getCurrPlayerHands not working!");
+		return null;
 	}
 	
 	public void takeAction(int action) {
