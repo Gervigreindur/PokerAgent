@@ -1,14 +1,12 @@
 package PokerAgent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Board {
 	
 
 	private ArrayList<Player> playersInGame;
 	private ArrayList<Player> playersInRound;
-	private Integer[] currBetsMadeByPlayer;
 	public Deck deck;
 	private Card[] table; //mögulega þarf þetta ekki en kannski er betra að geyma það uppá að reikna möguleika hinna leikmannana á vinningi
 	protected boolean preFlop, flop, turn, river;
@@ -26,7 +24,7 @@ public class Board {
 		this.size = size;
 		playersInGame = new ArrayList<Player>();
 		playersInRound = new ArrayList<Player>();
-		currBetsMadeByPlayer = new Integer[size];
+		
 		table = new Card[5];
 		
 		pot = 0;
@@ -43,7 +41,6 @@ public class Board {
 		
 		playersInGame = new ArrayList<Player>();
 		playersInRound = new ArrayList<Player>();
-		currBetsMadeByPlayer = new Integer[board.size];
 		table = new Card[5];
 		
 		pot = 0;
@@ -57,7 +54,9 @@ public class Board {
 	}
 
 	private void initializeCurrBetsMadeByPlayer() {
-		Arrays.fill(currBetsMadeByPlayer, 0);
+		for(Player p : playersInRound) {
+			p.resetCurrBet();
+		}
 	}
 
 	public boolean isActive() {
@@ -92,8 +91,8 @@ public class Board {
 					}
 				}
 				
-				initializeCurrBetsMadeByPlayer();
 				playersInRound.addAll(playersInGame);
+				initializeCurrBetsMadeByPlayer();
 				placeBlinds();
 				placeBets(true);
 				System.out.println("PREFLOP ENDED");
@@ -181,9 +180,10 @@ public class Board {
 				initializeCurrBetsMadeByPlayer();
 				placeBets(false);
 				System.out.println("RIVER ENDED");
-				river = false;
+				
 				preFlop = true;
 				if(checkForWinner()) {
+					river = false;
 					break;
 				}
 			}
@@ -195,6 +195,7 @@ public class Board {
 		for(Player p : playersInGame) {
 			p.emptyHand();
 		}
+		
 		pot = 0;
 		playersInRound.removeAll(playersInRound);
 		deck = new Deck();
@@ -205,6 +206,7 @@ public class Board {
 		if(playersInRound.size() == 1) {
 			for(Player player : playersInRound) {
 				player.addPot(pot);
+				System.out.println(player.seeName() + " won " + pot + "$, Congratulations");
 			}
 			
 			return true;
@@ -230,6 +232,7 @@ public class Board {
 				for(Player player : playersInRound) {
 					if(player.getID() == winnerID) {
 						player.addPot(pot);
+						System.out.println(player.seeName() + " won " + pot + "$, Congratulations");
 						return true;
 					}
 				}
@@ -237,6 +240,7 @@ public class Board {
 			// If we need to divide the pot 
 			int potDivided = pot / winners.size();
 			for(Player player : winners) {
+				System.out.println(player.seeName() + " splits the pot and gets " + potDivided + "$ from total pot: " + pot + ", Congratulations");
 				player.addPot(potDivided);
 			}
 			
@@ -259,9 +263,6 @@ public class Board {
 		int sb = playersInRound.size() - 2;
 		playersInRound.get(bb).madeBet(bigBlind);
 		playersInRound.get(sb).madeBet(smallBlind);
-		
-		currBetsMadeByPlayer[bb] = bigBlind;
-		currBetsMadeByPlayer[sb] = smallBlind;
 		
 		currBet = bigBlind;
 		pot = bigBlind + smallBlind;
@@ -293,7 +294,6 @@ public class Board {
 					//raise
 					System.out.println(currPlayer.seeName() + " raised " + bigBlind + "$");
 					currBet += bigBlind;
-					currBetsMadeByPlayer[currPlayer.getID()] += bigBlind;
 					currPlayer.madeBet(bigBlind);
 					pot += bigBlind;
 					betMade = true;
@@ -310,9 +310,9 @@ public class Board {
 					//check/call
 					if(betMade) {
 						//call
-						int diff = currBet - currBetsMadeByPlayer[currPlayer.getID()];
+						int diff = currBet - currPlayer.getCurrBet();
 						currPlayer.madeBet(diff);
-						currBetsMadeByPlayer[currPlayer.getID()] = currBet;
+						
 						pot += diff;
 						System.out.println(currPlayer.seeName() + " called " + diff + "$");
 					}

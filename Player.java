@@ -8,10 +8,29 @@ public class Player {
 	private int ID;
 	private boolean myTurn;
 	
+	private int currBet;
+	
 	Player(String name, int deposit) {
 		this.name = name;
 		this.stack = deposit;
 		hand = new Hand();
+		currBet = 0;
+	}
+	
+	Player(Player p) {
+		this.name = p.seeName();
+		this.stack = p.seeStack();
+		this.hand = new Hand(p.getHand());
+		this.currBet = p.getCurrBet();
+		this.ID = p.getID();
+	}
+	
+	public int getCurrBet() {
+		return currBet;
+	}
+	
+	public void resetCurrBet() {
+		currBet = 0;
 	}
 	
 	public boolean getMyTurn() {
@@ -28,6 +47,7 @@ public class Player {
 	
 	public void madeBet(int amount) {
 		stack -= amount;
+		currBet += amount;
 	}
 	
 	public int getID() {

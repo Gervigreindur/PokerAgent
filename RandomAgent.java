@@ -8,7 +8,7 @@ public class RandomAgent extends Player {
 	RandomAgent(String name, int deposit, Board board) {
 		super(name, deposit);
 		this.board = new Board(board);
-		environment = new State(this, board);
+		environment = new State(board, this);
 	}
 	
 	public String getInput() {

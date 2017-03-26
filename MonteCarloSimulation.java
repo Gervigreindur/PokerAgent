@@ -8,21 +8,24 @@ public class MonteCarloSimulation {
 	private Player me;
 	private int result;
 	private int numberOfSimulations;
+	private int check;
+	private int raise;
 
 	public MonteCarloSimulation(Player agent, Board board) {
 		myBoard = new Board(board);
 		me = agent;
 		numberOfSimulations = 1000;
+		check = 0;
+		raise = 0;
 	}
 	
-	public void simulate() {
+	public int simulate() {
 		
-		int check = 0;
-		int raise = 0;
+		
 	
 		for(int i = 0; i < numberOfSimulations; i++) {
 			
-			State simulation = new State(myBoard, me.getID());
+			State simulation = new State(myBoard, me);
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 			check += simulateAction(simulation, 1);
@@ -31,17 +34,20 @@ public class MonteCarloSimulation {
 		}
 		
 		check = check / numberOfSimulations;
-		raise = raise / numberOfSimulations; 
+		raise = raise / numberOfSimulations;
+		
+		return Math.max(check, raise);
 			
 	}
 	
 	public int simulateAction(State simmi, int action) {
-		
+		/*
+		 * TODO: return amount bet by player.
 		if(simmi.isTerminal()) {
-			//todo return amount bet by player.
+			
 			return 0;
 		}
-		
+		*/
 		State simulation = new State(simmi);
 		simulation.takeAction(action);
 		
@@ -65,7 +71,10 @@ public class MonteCarloSimulation {
 		else if(decision == foldProb) {
 			return simulateAction(simulation, 3);
 		}
+
+		return 0;
 		
+
 	}
 	
 	private double propabilityOfFold(double probOfWinning) {		
@@ -204,10 +213,6 @@ public class MonteCarloSimulation {
 	
 	private int getRandVal() {
 		return ThreadLocalRandom.current().nextInt(0, 11);
-	}
-	
-	public int result() {
-		return result;
 	}
 	
 }
