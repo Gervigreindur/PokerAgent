@@ -19,7 +19,7 @@ public class Hand {
 	public Hand(Hand hand) {
 		this.hand = new Card[7];
 		for(int i = 0; i < hand.getHand().length; i++) {
-			this.hand[i] = hand.getHand()[i];
+			this.hand[i] = new Card(hand.getHand()[i].getSuit(), hand.getHand()[i].getRank());
 		}
 		this.pivot = hand.pivot;
 		this.firstMatch = hand.firstMatch;
