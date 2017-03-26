@@ -28,6 +28,10 @@ public class Hand {
 		Arrays.fill(hand, null);
 	}
 	
+	public Card[] getHand() {
+		return hand;
+	}
+	
 	public String getCards() {
 		String result = "";
 		for(Card c : hand) {

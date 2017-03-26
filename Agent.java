@@ -4,24 +4,22 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Agent extends Player {
 
-	State environment;
 	Board board;
+
 	Agent(String name, int deposit, Board board) {
 		super(name, deposit);
-		this.board = new Board(board);
-		environment = new State(this, board);
+		this.board = board;
 	}
 	
 	public String getInput() {
-		environment.update();
-		Integer value = monteCarloSimulation();
-
-		return value.toString();
+		return Integer.toString(monteCarloSimulation());
 	}
 	
 	public int monteCarloSimulation() {
 		
-		return ThreadLocalRandom.current().nextInt(1, 4); 
+		MonteCarloSimulation mcts = new MonteCarloSimulation(this, board);
+		
+		return mcts.result(); 
 	}
 
 	

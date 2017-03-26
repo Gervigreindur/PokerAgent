@@ -15,6 +15,13 @@ public class Card {
 		return ranks[rank];
 	}
 	
+	public boolean equals(Card c) {
+		if(this.rank == c.rank && this.suit == c.suit) {
+			return true;
+		}
+		return false;
+	}
+	
 	public @Override String toString() {
 		return ranks[rank] + " of " + suits[suit];
 	}

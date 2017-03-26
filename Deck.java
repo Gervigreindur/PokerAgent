@@ -21,6 +21,13 @@ public class Deck {
 		shuffle();		
 	}
 	
+	Deck(Deck deck) {
+		cards = new ArrayList<Card>();
+		for(int i = 0; i < deck.cards.size(); i++) {
+			cards.add(deck.cards.get(i));
+		}
+	}
+	
 	public void shuffle() {
 		
 		for(int i = 0; i < 100; i++) {

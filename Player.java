@@ -6,12 +6,20 @@ public class Player {
 	private int stack;
 	private Hand hand;
 	private int ID;
+	private boolean myTurn;
 	
 	Player(String name, int deposit) {
 		this.name = name;
 		this.stack = deposit;
-		
 		hand = new Hand();
+	}
+	
+	public boolean getMyTurn() {
+		return myTurn;
+	}
+	
+	public void setMyTurn() {
+		myTurn = !myTurn;
 	}
 	
 	public void recievesCards(Card card) {

@@ -11,9 +11,9 @@ public class Board {
 	private Integer[] currBetsMadeByPlayer;
 	public Deck deck;
 	private Card[] table; //mögulega þarf þetta ekki en kannski er betra að geyma það uppá að reikna möguleika hinna leikmannana á vinningi
-	private boolean preFlop, flop, turn, river;
-	private int pot, bigBlind, smallBlind, currBet; 
-	protected int size;
+	protected boolean preFlop, flop, turn, river;
+	private int bigBlind, smallBlind; 
+	protected int size, pot, currBet;
 	private int handsPlayed; //uppá að hækka blinds eftir einhvern tíma...?
 
 	public Board(int size) {
@@ -336,6 +336,13 @@ public class Board {
 		player.setID(playersInGame.size() - 1);
 	}
 	
+	public ArrayList<Player> getPlayers() {
+		return playersInRound;
+	}
+	
+	public Card[] getTable() {
+		return table;
+	}
 	public Board getBoard() {
 		return this;
 	}
