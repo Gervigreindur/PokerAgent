@@ -7,7 +7,6 @@ public class Player {
 	private Hand hand;
 	private int ID;
 	private boolean myTurn;
-	
 	private int currBet;
 	
 	Player(String name, int deposit) {
@@ -27,7 +26,7 @@ public class Player {
 		this.ID = p.getID();
 		this.myTurn = p.getMyTurn();
 	}
-	
+
 	public int getCurrBet() {
 		return currBet;
 	}

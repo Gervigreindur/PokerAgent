@@ -97,10 +97,11 @@ public class MonteCarloSimulation {
 	
 	private double propabilityWinPercentage(Hand hand) {
 		
-		outs = new ArrayList<Double>();		
+		outs = new ArrayList<Double>();	
+		double val = 0;
 		for(double i = 0; i <= 21; i++)
 		{
-			outs.add(i += 3.8);
+			outs.add(val += 3.8);
 		}
 		
 		int outsForNext = 0;
