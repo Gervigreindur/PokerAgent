@@ -18,7 +18,7 @@ public class State {
 		playersInRound = new ArrayList<Player>();
 		
 		for(Player p : state.getPlayers()) {
-			Player newPlaya = new Player(p.seeName(), p.seeStack());
+			Player newPlaya = new Player(p);
 			playersInRound.add(newPlaya);
 		}
 		/*		
@@ -46,7 +46,7 @@ public class State {
 		playersInRound = new ArrayList<Player>();
 		int highestBet = 0;
 		for(Player p : board.getPlayers()) {
-			Player newPlaya = new Player(p.seeName(), p.seeStack());
+			Player newPlaya = new Player(p);
 			playersInRound.add(newPlaya);
 			if(p.getCurrBet() > highestBet) {
 				highestBet = p.getCurrBet();
