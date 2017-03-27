@@ -82,7 +82,7 @@ public class State {
 		smallBlind = 5;
 		bigBlind = 10;
 		currBet = board.currBet;
-		deck = new Deck(board.deck);
+		deck = new Deck();
 		preFlop = board.preFlop;
 		flop = board.flop;
 		turn = board.turn;
@@ -124,7 +124,7 @@ public class State {
 			}
 		}
 		else if(river) {
-			System.out.println("ég er inní river!!!");
+			//System.out.println("ég er inní river!!!");
 			int best = -1;
 			ArrayList<Player> winners = new ArrayList<Player>();
 			//Evaluate best hand 
@@ -242,7 +242,7 @@ public class State {
 			for(Player p : playersInRound) {
 				int counter = 0;
 				
-				while(counter <= 3) {
+				while(counter < 3) {
 					boolean checker = true;
 					Card c = deck.drawFromDeck();
 					for(Card card : takenCards) {
@@ -258,6 +258,7 @@ public class State {
 				}
 			}
 		}
+		
 		else if(turn || river) {
 			for(Player p : playersInRound) {
 				int counter = 0;

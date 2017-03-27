@@ -28,8 +28,8 @@ public class MonteCarloSimulation {
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 
-			check += simulateAction(simulation, 1, 10000);
-			raise += simulateAction(simulation, 2, 10000);
+			check += simulateAction(simulation, 1, 1000);
+			raise += simulateAction(simulation, 2, 1000);
 
 		}
 		
@@ -94,9 +94,9 @@ public class MonteCarloSimulation {
 				return simulateAction(simulation, 3, depth-1);
 			}
 		}
-		else {
+		/*else {
 			return (simulateAction(simulation, 1, depth-1) + simulateAction(simulation, 2, depth-1)) / 2;
-		}
+		}*/
 		
 
 		return 0;
