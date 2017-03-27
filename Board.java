@@ -249,18 +249,16 @@ public class Board {
 					winnerID = player.getID();
 					best = value;
 					winners.clear();
+					winners.add(player);
 				}
 			}
 			
-			if(winners.isEmpty()) {
-				for(Player player : playersInRound) {
-					if(player.getID() == winnerID) {
-						player.addPot(pot);
-						System.out.println(player.seeName() + " won " + pot + "$, Congratulations");
-						return true;
-					}
-				}
+			if(winners.size() == 1) {
+					winners.get(0).addPot(pot);
+					System.out.println(winners.get(0).seeName() + " won " + pot + "$, Congratulations");
+					return true;
 			}
+			
 			// If we need to divide the pot 
 			int potDivided = pot / winners.size();
 			for(Player player : winners) {

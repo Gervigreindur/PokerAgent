@@ -12,6 +12,7 @@ public class MonteCarloSimulation {
 	private double check;
 	private double raise;
 	private ArrayList<Double> outs;
+	public int DEPTH = 100;
 
 	public MonteCarloSimulation(Player agent, Board board) {
 		myBoard = new Board(board);
@@ -28,8 +29,8 @@ public class MonteCarloSimulation {
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 
-			check += simulateAction(simulation, 1, 1000);
-			raise += simulateAction(simulation, 2, 1000);
+			check += simulateAction(simulation, 1, DEPTH);
+			raise += simulateAction(simulation, 2, DEPTH);
 
 		}
 		
