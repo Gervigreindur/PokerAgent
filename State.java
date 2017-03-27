@@ -326,7 +326,7 @@ public class State {
 	
 	private void changeState() {
 		//TODO remember the pre flop BB call counter bug
-		if(playersInRound.size() != 1) {
+		if(playersInRound.size() > 1 ) {
 			if((raise && callCounter == playersInRound.size() -1) || (!raise && callCounter == playersInRound.size())) {
 
 				if(preFlop) {
@@ -341,14 +341,18 @@ public class State {
 					turn = false;
 					river = true;
 				}
-				for(Player p : playersInRound) {
-					p.setRaiseCounter(0);
+				if(!river) {
+					for(Player p : playersInRound) {
+						p.setRaiseCounter(0);
+					}
+					currPlayer = new Player(playersInRound.get(0));
+					dealCards();
+					currBet = 0;	
+					raise = false;
+					callCounter = 0;
 				}
-				currPlayer = new Player(playersInRound.get(0));
-				dealCards();
-				currBet = 0;	
-				raise = false;
-				callCounter = 0;			
+
+				
 			}	
 		}
 	}

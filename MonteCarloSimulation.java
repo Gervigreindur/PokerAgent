@@ -56,19 +56,21 @@ public class MonteCarloSimulation {
 	
 	public double simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
-			//System.out.println("depth");
+			/*System.out.println("preFlop " + simmi.preFlop);
+			System.out.println("flop " + simmi.flop);
+			System.out.println("turn " + simmi.turn);
+			System.out.println("river " + simmi.river);
+			System.out.println(" ");*/
 			return 0;
 		}
 		
 		if(simmi.isTerminal()) {
-			
 			return simmi.terminal(me);
 		}
 		
 		State simulation = new State(simmi);
 		simulation.takeAction(action);
 			
-		
 		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
 		double prob = propabilityWinPercentage(simulation);
 		prob -= ((numberOfPeopleInRound-1) * 3.75);
