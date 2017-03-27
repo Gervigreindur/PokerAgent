@@ -315,9 +315,9 @@ public class State {
 	
 	private void changeState() {
 		//TODO remember the pre flop BB call counter bug
-		System.out.println(callCounter + " " + (playersInRound.size() - 1));
+		//System.out.println(callCounter + " " + (playersInRound.size() - 1));
 		if(callCounter == playersInRound.size() - 1) {
-			System.out.println("HÉRNA");
+			//System.out.println("HÉRNA");
 			if(preFlop) {
 				preFlop = false;
 				flop = true;
