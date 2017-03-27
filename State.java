@@ -252,7 +252,7 @@ public class State {
 						}
 					}
 					if(checker) {
-						p.recievesCards(deck.drawFromDeck());
+						p.recievesCards(c);
 						counter++;
 					}
 				}
@@ -272,7 +272,7 @@ public class State {
 						}
 					}
 					if(checker) {
-						p.recievesCards(deck.drawFromDeck());
+						p.recievesCards(c);
 						counter++;
 					}
 				}
