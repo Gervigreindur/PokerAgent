@@ -421,8 +421,12 @@ public class Hand {
 		}
 		else if(isFourOfKind()) {
 			// 700 + (AAAA = 14, 5555 = 5) + highCard
-	
-			return 700 + firstMatch.getRank() + 2 + getHighCard(firstMatch, null).getRank() + 2;
+			Card highCard = getHighCard(firstMatch, null);
+			if(highCard != null) {
+				return 700 + firstMatch.getRank() + 2 + highCard.getRank() + 2;
+			}
+			return 700 + firstMatch.getRank() + 2;
+			
 		}
 		else if(isFullHouse()) {
 			// "When comparing full houses, the rank of the three cards determines which is higher. For example 9-9-9-4-4 beats 8-8-8-A-A"
@@ -442,18 +446,29 @@ public class Hand {
 		}
 		else if(isThreeOfKind()) {
 			//300 + (KKK = 13, 777 = 7) + highCard
-	
-			return 300 + firstMatch.getRank() + 2 + getHighCard(firstMatch, null).getRank() + 2;
+			Card highCard = getHighCard(firstMatch, null);
+			if(highCard != null) {
+				return 300 + firstMatch.getRank() + 2 + highCard.getRank() + 2;
+			}
+			return 300 + firstMatch.getRank() + 2;
 		}
 		else if(isTwoPairs()) {
 			//200 + (KK AA = 13 + 14 = 27, 77 88 = 7 + 8 = 15) + highCard
+			Card highCard = getHighCard(firstMatch, secondMatch);
 			
-			return 200 + firstMatch.getRank() + 2 + secondMatch.getRank() + 2 + getHighCard(firstMatch, secondMatch).getRank() + 2;
+			if(highCard != null) {
+				return 200 + firstMatch.getRank() + 2 + secondMatch.getRank() + 2 + highCard.getRank() + 2;
+			}
+			return 200 + firstMatch.getRank() + 2 + secondMatch.getRank() + 2;
 		}
 		else if(isPair()) {
 			//there are 13 different pairs. the value of the pair is 100 + the rank of the pair(KK = 12, 88 = 8) plus the value of the highcard
-
-			return 100 + firstMatch.getRank() + 2 + getHighCard(firstMatch, null).getRank() + 2;
+			Card highCard = getHighCard(firstMatch, null)
+			
+			if(highCard != null) {
+				return 100 + firstMatch.getRank() + 2 + highCard.getRank() + 2;
+			}
+			return 100 + firstMatch.getRank() + 2;
 		}
 		else {
 			//1-13
