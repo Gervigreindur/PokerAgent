@@ -41,7 +41,6 @@ public class MonteCarloSimulation {
 		//System.out.println(result);
 
 		if(myBoard.getCurrBet() - me.getCurrBet() <= 5 && result < 0) {
-
 			return 1;
 		}
 		if(result < 0) { 
@@ -58,12 +57,11 @@ public class MonteCarloSimulation {
 	public double simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
 			//System.out.println("depth");
-			//System.out.println(simmi.getNumberOfPLayersInRound());
-
 			return 0;
 		}
 		
 		if(simmi.isTerminal()) {
+			
 			return simmi.terminal(me);
 		}
 		
@@ -77,7 +75,7 @@ public class MonteCarloSimulation {
 		
 		double checkCall = propabilityOfCheckCall(prob);
 		double raise;
-		if(simulation.getCurrPlayer().getCurrBet() == 0) {
+		if(simulation.getCurrPlayer().getRaiseCounter() == 0) {
 			raise = propabilityOfRaise(prob);
 		}
 		else {
