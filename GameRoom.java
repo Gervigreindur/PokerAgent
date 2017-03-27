@@ -10,7 +10,7 @@ public class GameRoom {
 		board.addPlayer(new Agent("Gisli", buyIn, board));
 		board.addPlayer(new Agent("Steini", buyIn, board));
 		board.addPlayer(new Agent("Vedis", buyIn, board));
-		board.addPlayer(new Human("Einir", buyIn));
+		board.addPlayer(new Agent("Einir", buyIn, board));
 		
 		while(board.isActive()) {
 			board.play();

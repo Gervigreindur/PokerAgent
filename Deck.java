@@ -29,7 +29,7 @@ public class Deck {
 			cards.add(new Card(deck.cards.get(i).getSuit(), deck.cards.get(i).getRank()));
 		}
 		
-		this.pivot = deck.pivot;
+		this.pivot = 0;
 	}
 	
 	public void shuffle() {
@@ -60,7 +60,8 @@ public class Deck {
 		pivot++;
 		
 		if(pivot < 0 || pivot >= cards.size()) {
-			throw new IndexOutOfBoundsException("pivot out of order, " + pivot + " thrown from drawFromDeck() in Deck class");
+			pivot = 0;
+			//throw new IndexOutOfBoundsException("pivot out of order, " + pivot + " thrown from drawFromDeck() in Deck class");
 		}
 		
 		//System.out.println("Number of cards left: " + getNumberOfCardsInDeck() + " what hand to romve: " + cards.get(pivot));
