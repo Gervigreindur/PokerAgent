@@ -1,5 +1,7 @@
 package PokerAgent;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class Board {
@@ -78,9 +80,14 @@ public class Board {
 	}
 
 	public void play() {
-		//TODO:
-		//* Finna ef gaur er að fara all in eða á ekki fyrir depositinu, eins og td ef stóri blindi á bara 5$ eftir
-		//* Fylla inní checkForWinner fallið svo það skoði spilin og finni hver er með bestu höndina
+		InputStream ble = System.in;
+		try {
+			int bla = ble.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		while(true) {
 			if(preFlop) {
 				//Preflop---------------------------------------------------------
@@ -317,7 +324,13 @@ public class Board {
 		int players = playersInRound.size();
 		int betCounter = 0;
 		
-		while(betCounter < players) {
+		for(Player p : playersInRound) {
+			if(p.getAllIn()) {
+				players--;
+			}
+		}
+		
+		while(betCounter < players && players > 1) {
 			for(int i = 0; i < playersInRound.size() ; i++) {
 				Player currPlayer = playersInRound.get(i);
 				if(!currPlayer.getAllIn()) {
@@ -379,6 +392,8 @@ public class Board {
 				}
 				//System.out.println("------");
 				if(betCounter == players) { break; }
+				if(players == 1) { break; }
+				
 			}
 		}
 		
