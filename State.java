@@ -84,10 +84,15 @@ public class State {
 		flop = board.flop;
 		turn = board.turn;
 		river = board.river;
+		System.out.println("preFlop = " + board.preFlop);
+		System.out.println("flop = " + board.flop);
+		System.out.println("turn = " + board.turn);
+		System.out.println("river = " + board.river);
+		System.out.println(" ");
 	}
 	
 	public boolean isTerminal() {
-		System.out.println(playersInRound.size());
+		
 		if(playersInRound.size() == 1) {
 			return true;
 		}
@@ -172,6 +177,7 @@ public class State {
 				else {
 					currPlayer = new Player(playersInRound.get(0));
 				}
+				break;
 			}
 		}
 	}
@@ -305,14 +311,12 @@ public class State {
 				}
 			}
 		}
-		
 		changeState();
 	}
 	
 	private void changeState() {
 		//TODO remember the pre flop BB call counter bug
 		if((raise && callCounter == playersInRound.size() -1) || (!raise && callCounter == playersInRound.size())) {
-		
 			if(preFlop) {
 				preFlop = false;
 				flop = true;
@@ -325,6 +329,7 @@ public class State {
 				turn = false;
 				river = true;
 			}
+
 			currPlayer = new Player(playersInRound.get(0));
 			dealCards();
 				
