@@ -87,10 +87,11 @@ public class State {
 		flop = board.flop;
 		turn = board.turn;
 		river = board.river;
+	
 	}
 	
 	public boolean isTerminal() {
-		//System.out.println(playersInRound.size());
+
 		if(playersInRound.size() == 1) {
 			return true;
 		}
@@ -125,7 +126,7 @@ public class State {
 			ArrayList<Player> winners = new ArrayList<Player>();
 			//Evaluate best hand 
 			for(Player player : playersInRound) {
-				int value = player.getHandValue();
+				int value = player.getHandValueSimulation();
 				if(value == best) {
 					winners.add(player);
 				}
@@ -169,10 +170,10 @@ public class State {
 		for(int i = 0; i < playersInRound.size(); i++) {
 			if(playersInRound.get(i).getID() == currPlayer.getID()) {
 				if(i+1 != playersInRound.size()) {
-					currPlayer = new Player(playersInRound.get(i+1));
+					currPlayer = playersInRound.get(i+1);
 				}
 				else {
-					currPlayer = new Player(playersInRound.get(i));
+					currPlayer = playersInRound.get(i);
 				}
 				break;
 			}
@@ -205,15 +206,15 @@ public class State {
 					}
 				}			
 			}
-			if(flop) {
+			if(flop && player.getID() != agent.getID()) {
 				player.recievesCards(agent.getHand().getHand()[2]);
 				player.recievesCards(agent.getHand().getHand()[3]);
 				player.recievesCards(agent.getHand().getHand()[4]);
 			}
-			else if(turn) {
+			else if(turn && player.getID() != agent.getID()) {
 				player.recievesCards(agent.getHand().getHand()[5]);
 			}
-			else if(river) {
+			else if(river && player.getID() != agent.getID()) {
 				player.recievesCards(agent.getHand().getHand()[6]);
 			}
 		}
@@ -234,9 +235,6 @@ public class State {
 				takenCards.add(new Card(currPlayer.getHand().getHand()[i].getSuit(), currPlayer.getHand().getHand()[i].getRank()));
 			}
 		}
-		
-		
-		
 		if(flop) {
 			for(Player p : playersInRound) {
 				int counter = 0;
@@ -245,8 +243,6 @@ public class State {
 					boolean checker = true;
 					Card c = deck.drawFromDeck();
 					for(Card card : takenCards) {
-						
-						
 						if(c.equals(card)) {
 							checker = false;
 							break;
@@ -319,12 +315,9 @@ public class State {
 	
 	private void changeState() {
 		//TODO remember the pre flop BB call counter bug
-		//System.out.println(callCounter + " " + (playersInRound.size() - 1));
-		//if(callCounter == playersInRound.size() - 1) {
-			//System.out.println("HÉRNA");
-
+		
 		if((raise && callCounter == playersInRound.size() -1) || (!raise && callCounter == playersInRound.size())) {
-			
+
 			if(preFlop) {
 				preFlop = false;
 				flop = true;
@@ -337,6 +330,7 @@ public class State {
 				turn = false;
 				river = true;
 			}
+
 			currPlayer = new Player(playersInRound.get(0));
 			dealCards();
 				

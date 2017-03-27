@@ -93,6 +93,10 @@ public class Player {
 	public int getHandValue() {
 		return hand.valueOfHand();
 	}
+	
+	public int getHandValueSimulation() {
+		return hand.valueOfHandSimulation();
+	}
 	//===================================================================================================================
 
 	public String getInput() {

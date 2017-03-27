@@ -55,8 +55,10 @@ public class Board {
 		currBet = 0;
 		handsPlayed = 0;
 		deck = new Deck();
-		preFlop = true;
-		flop = turn = river = false;
+		preFlop = board.preFlop;
+		flop = board.flop;
+		turn = board.turn;
+		river = board.river;
 	}
 
 	private void initializeCurrBetsMadeByPlayer() {
