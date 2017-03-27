@@ -96,7 +96,7 @@ public class State {
 			return true;
 		}
 		else if(river) {
-			
+			//System.out.println("river Is terminal");
 			for(Player p : playersInRound) {
 				if(p.getCurrBet() != currBet) {
 					return false;
@@ -301,7 +301,7 @@ public class State {
 			callCounter = 0;
 			currBet += bigBlind;
 			currPlayer.madeBet(currBet);
-			currPlayer.setRaiseCounter(currPlayer.getRaiseCounter() + 1);
+			currPlayer.setRaiseCounter(1);
 			pot += currBet;
 			incrementCurrPlayer();
 		}

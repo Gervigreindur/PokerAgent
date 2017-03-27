@@ -28,8 +28,8 @@ public class MonteCarloSimulation {
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 
-			check += simulateAction(simulation, 1, 20);
-			raise += simulateAction(simulation, 2, 20);
+			check += simulateAction(simulation, 1, 1000);
+			raise += simulateAction(simulation, 2, 1000);
 
 		}
 		
@@ -71,21 +71,22 @@ public class MonteCarloSimulation {
 		simulation.takeAction(action);
 			
 		
-
+		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
+		double prob = propabilityWinPercentage(simulation);
+		prob -= ((numberOfPeopleInRound-1) * 3.75);
+		
+		double checkCall = propabilityOfCheckCall(prob);
+		double raise;
+		if(simulation.getCurrPlayer().getCurrBet() == 0) {
+			raise = propabilityOfRaise(prob);
+		}
+		else {
+			raise = 0;
+		}
+		
 		if(simulation.getCurrPlayer().getID() != me.getID()) {
 			
-			int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
-			double prob = propabilityWinPercentage(simulation);
-			prob -= ((numberOfPeopleInRound-1) * 3.75);
-			
 			double foldProb = propabilityOfFold(prob, simulation);
-			double checkCall = propabilityOfCheckCall(prob);
-			double raise;
-			if(simulation.getCurrPlayer().getCurrBet() >= 1) {
-				raise = 0;
-			}
-			raise = propabilityOfRaise(prob);
-			
 			double decision = Math.max(Math.max(foldProb, checkCall), raise);
 			
 			if(decision == checkCall) {
@@ -99,7 +100,14 @@ public class MonteCarloSimulation {
 			}
 		}
 		else {
-			return (simulateAction(simulation, 1, depth-1) + simulateAction(simulation, 2, depth-1)) / 2;
+			double decision = Math.max(checkCall, raise);
+			
+			if(decision == checkCall) {
+				return simulateAction(simulation, 1, depth-1);
+			}
+			else if(decision == raise) {
+				return simulateAction(simulation, 2, depth-1);
+			}
 		}
 		
 
