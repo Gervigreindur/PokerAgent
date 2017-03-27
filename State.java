@@ -143,17 +143,16 @@ public class State {
 				if(value > best) {
 					best = value;
 					winners.clear();
+					winners.add(player);
 				}
 			}
 			
-			if(winners.isEmpty()) {
-				for(Player player : playersInRound) {
-					if(player.getID() == me.getID()) {					
-						return 1;
-					}
-					else {
-						return -1;
-					}
+			if(winners.size() == 1) {
+				if(winners.get(0).getID() == me.getID()) {					
+					return 1;
+				}
+				else {
+					return -1;
 				}
 			}
 			// If we need to divide the pot 
