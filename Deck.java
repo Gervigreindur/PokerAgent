@@ -29,7 +29,7 @@ public class Deck {
 			cards.add(new Card(deck.cards.get(i).getSuit(), deck.cards.get(i).getRank()));
 		}
 		
-		this.pivot = 0;
+		this.pivot = deck.pivot;
 	}
 	
 	public void shuffle() {
@@ -56,7 +56,6 @@ public class Deck {
 	public Card drawFromDeck() {
 		Card card = cards.get(pivot);
 		Card tmp = card;
-		cards.remove(pivot);
 		pivot++;
 		
 		if(pivot < 0 || pivot >= cards.size()) {

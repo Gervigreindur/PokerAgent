@@ -28,8 +28,8 @@ public class MonteCarloSimulation {
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 
-			check += simulateAction(simulation, 1, 1000);
-			raise += simulateAction(simulation, 2, 1000);
+			check += simulateAction(simulation, 1, 100);
+			raise += simulateAction(simulation, 2, 100);
 
 		}
 		
@@ -41,7 +41,6 @@ public class MonteCarloSimulation {
 		System.out.println(result);
 
 		if(myBoard.getCurrBet() - me.getCurrBet() <= 5 && result < 0) {
-
 			return 1;
 		}
 		if(result < 0) {
@@ -57,9 +56,6 @@ public class MonteCarloSimulation {
 	
 	public int simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
-			/*System.out.println("depth");
-			System.out.println(simmi.getNumberOfPLayersInRound());
-*/
 			return 0;
 		}
 		
@@ -94,9 +90,9 @@ public class MonteCarloSimulation {
 				return simulateAction(simulation, 3, depth-1);
 			}
 		}
-		/*else {
+		else {
 			return (simulateAction(simulation, 1, depth-1) + simulateAction(simulation, 2, depth-1)) / 2;
-		}*/
+		}
 		
 
 		return 0;
