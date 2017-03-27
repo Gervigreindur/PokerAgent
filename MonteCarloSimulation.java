@@ -28,12 +28,10 @@ public class MonteCarloSimulation {
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 
-			check += simulateAction(simulation, 1, 1000);
-			raise += simulateAction(simulation, 2, 1000);
+			check += simulateAction(simulation, 1, 10000);
+			raise += simulateAction(simulation, 2, 10000);
 
 		}
-		
-		System.out.println("Check: " + check + " raise: " + raise );
 		
 		check = check / numberOfSimulations;
 		raise = raise / numberOfSimulations;
@@ -74,7 +72,7 @@ public class MonteCarloSimulation {
 		
 		prob -= ((numberOfPeopleInRound-1) * 3.75);
 		
-		double foldProb = propabilityOfFold(prob);
+		double foldProb = propabilityOfFold(prob, simulation);
 		double checkCall = propabilityOfCheckCall(prob);
 		double raise = propabilityOfRaise(prob);
 		
@@ -94,8 +92,15 @@ public class MonteCarloSimulation {
 
 	}
 	
-	private double propabilityOfFold(double probOfWinning) {
-		return(100 - probOfWinning + getRandVal());
+	private double propabilityOfFold(double probOfWinning, State simulation) {
+		//System.out.println(simulation.currBet);
+		if(simulation.currBet == 0) {
+			return 0;
+		}
+		else {
+			return(100 - probOfWinning + getRandVal());
+		}
+		
 	}
 
 	private double propabilityOfCheckCall(double probOfWinning) {
@@ -184,10 +189,10 @@ public class MonteCarloSimulation {
 			else if(hand.isTwoPairs()){
 				outsForNext = 2;
 				if(cardOne < 7 && cardOne != 0 || cardTwo < 7 && cardTwo != 0) {
-					return 65.34 + outsForNext;
+					return 75.34 + outsForNext;
 				}
 				else if(cardOne > 7 || cardOne == 0|| cardTwo > 7 || cardTwo == 0){ //Pör yfir 7 og ásar
-					return 77.43 + outsForNext;
+					return 87.43 + outsForNext;
 				}
 			}				
 			else if(hand.isPair()) {
@@ -198,14 +203,13 @@ public class MonteCarloSimulation {
 				else if(cardOne > 7 || cardOne == 0|| cardTwo > 7 || cardTwo == 0){ //Pör yfir 7 og ásar
 					return 77.43 + outsForNext;
 				}
-				return 0;
+				return 50;
 			}
-			if(hand.isPair()) {
-				return 0;
-
+			else if(hand.isPair()) {
+				return 50;
 			}
 			else {
-				return 5;
+				return 50;
 			}
 		}
 		else if(simulation.turn)
@@ -231,11 +235,11 @@ public class MonteCarloSimulation {
 			else if(hand.isThreeOfKind()) {
 				return 50;
 			}
-			if(hand.isPair()) {
-				return 30;
+			else if(hand.isPair()) {
+				return 50;
 			}
 			else {
-				return 10;
+				return 50;
 			}
 		}
 		else if(simulation.river)
@@ -261,14 +265,14 @@ public class MonteCarloSimulation {
 			else if(hand.isThreeOfKind()) {
 				return 50;
 			}
-			if(hand.isPair()) {
-				return 30;
+			else if(hand.isPair()) {
+				return 50;
 			}
 			else {
-				return 10;
+				return 50;
 			}
 		}
-		return 0;
+		return 50;
 	
 	}
 	
