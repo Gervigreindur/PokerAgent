@@ -28,23 +28,23 @@ public class MonteCarloSimulation {
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 
-			check += simulateAction(simulation, 1, 100);
-			raise += simulateAction(simulation, 2, 100);
+			check += simulateAction(simulation, 1, 20);
+			raise += simulateAction(simulation, 2, 20);
 
 		}
 		
 		check = check / numberOfSimulations;
 		raise = raise / numberOfSimulations;
 		
-		//System.out.println("Check: " + check + " raise: " + raise );
+		System.out.println("Check: " + check + " raise: " + raise );
 		double result = Math.max(check, raise);
-		System.out.println(result);
+		//System.out.println(result);
 
 		if(myBoard.getCurrBet() - me.getCurrBet() <= 5 && result < 0) {
 
 			return 1;
 		}
-		if(result < 0) {
+		if(result < 0) { 
 			return 3;
 		}
 		if(result == check) {
@@ -55,7 +55,7 @@ public class MonteCarloSimulation {
 		}
 	}
 	
-	public int simulateAction(State simmi, int action, int depth) {
+	public double simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
 			//System.out.println("depth");
 			//System.out.println(simmi.getNumberOfPLayersInRound());
@@ -69,12 +69,12 @@ public class MonteCarloSimulation {
 		
 		State simulation = new State(simmi);
 		simulation.takeAction(action);
+			
 		
-		
-		
-		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
 
 		if(simulation.getCurrPlayer().getID() != me.getID()) {
+			
+			int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
 			double prob = propabilityWinPercentage(simulation);
 			prob -= ((numberOfPeopleInRound-1) * 3.75);
 			

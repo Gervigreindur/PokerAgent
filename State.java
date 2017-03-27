@@ -125,7 +125,6 @@ public class State {
 			}
 		}
 		else if(river) {
-			//System.out.println("river");
 			int best = -1;
 			ArrayList<Player> winners = new ArrayList<Player>();
 			//Evaluate best hand 
@@ -258,6 +257,7 @@ public class State {
 				}
 			}
 		}
+		
 		else if(turn || river) {
 			for(Player p : playersInRound) {
 				int counter = 0;

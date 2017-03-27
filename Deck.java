@@ -56,7 +56,6 @@ public class Deck {
 	public Card drawFromDeck() {
 		Card card = cards.get(pivot);
 		Card tmp = card;
-		cards.remove(pivot);
 		pivot++;
 		
 		if(pivot < 0 || pivot >= cards.size()) {
