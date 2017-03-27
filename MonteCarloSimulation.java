@@ -11,7 +11,6 @@ public class MonteCarloSimulation {
 	private int numberOfSimulations;
 	private int check;
 	private int raise;
-	private int fold;
 	private ArrayList<Double> outs;
 
 	public MonteCarloSimulation(Player agent, Board board) {
@@ -19,8 +18,7 @@ public class MonteCarloSimulation {
 		me = agent;
 		numberOfSimulations = 1000;
 		check = 0;
-		raise = 0;
-		fold = 0;		
+		raise = 0;		
 	}
 	
 	public int simulate() {
@@ -35,7 +33,6 @@ public class MonteCarloSimulation {
 		
 		check = check / numberOfSimulations;
 		raise = raise / numberOfSimulations;
-		fold = fold / numberOfSimulations;
 		
 		System.out.println("Check: " + check + " raise: " + raise + " fold: " + fold);
 		
