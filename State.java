@@ -337,8 +337,7 @@ public class State {
 				dealCards();
 				currBet = 0;	
 				raise = false;
-				callCounter = 0;
-				
+				callCounter = 0;			
 			}	
 		}
 	}

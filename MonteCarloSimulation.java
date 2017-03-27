@@ -41,7 +41,7 @@ public class MonteCarloSimulation {
 		//System.out.println("Check: " + check + " raise: " + raise );
 		double result = Math.max(check, raise);
 		System.out.println(result);
-		if(result < 0) {
+		if(result < 0 ) {
 			return 3;
 		}
 		if(result == raise) {
@@ -54,8 +54,8 @@ public class MonteCarloSimulation {
 	
 	public int simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
-			//System.out.println("depth");
-			//System.out.println(simmi.getNumberOfPLayersInRound());
+			System.out.println("depth");
+			System.out.println(simmi.getNumberOfPLayersInRound());
 
 			return 1;
 		}

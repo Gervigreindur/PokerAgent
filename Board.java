@@ -54,7 +54,7 @@ public class Board {
 		pot = 0;
 		smallBlind = 5;
 		bigBlind = 10;
-		currBet = 0;
+		currBet = board.currBet;
 		handsPlayed = 0;
 		deck = new Deck();
 		preFlop = board.preFlop;
