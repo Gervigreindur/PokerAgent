@@ -242,7 +242,7 @@ public class Hand {
 		getStraight(dupRemoved);
 		
 		//checking for a straight 5 high i no straight was found
-		/*if(firstMatch == null) {
+		if(firstMatch == null) {
 			if(cardCounter[12] != 0 && cardCounter[0] != 0 && cardCounter[1] != 0 && cardCounter[2] != 0 && cardCounter[3] != 0) {
 				for(Card c : hand) {
 					if( c.getRank() == 3) {
@@ -251,7 +251,7 @@ public class Hand {
 					}
 				}
 			}
-		}*/
+		}
 		
 		return firstMatch != null;
 	}
