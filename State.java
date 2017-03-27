@@ -84,11 +84,6 @@ public class State {
 		flop = board.flop;
 		turn = board.turn;
 		river = board.river;
-		System.out.println("preFlop = " + board.preFlop);
-		System.out.println("flop = " + board.flop);
-		System.out.println("turn = " + board.turn);
-		System.out.println("river = " + board.river);
-		System.out.println(" ");
 	}
 	
 	public boolean isTerminal() {
@@ -104,8 +99,7 @@ public class State {
 			}
 			return true;
 		}
-		
-		
+				
 		return false;
 	}
 	
