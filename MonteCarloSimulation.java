@@ -89,11 +89,11 @@ public class MonteCarloSimulation {
 			double foldProb = propabilityOfFold(prob, simulation);
 			double decision = Math.max(Math.max(foldProb, checkCall), raise);
 			
-			if(decision == checkCall) {
-				return simulateAction(simulation, 1, depth-1);
-			}
-			else if(decision == raise) {
+			if(raise > 80) {
 				return simulateAction(simulation, 2, depth-1);
+			}
+			else if(decision == checkCall) {
+				return simulateAction(simulation, 1, depth-1);
 			}
 			else if(decision == foldProb) {
 				return simulateAction(simulation, 3, depth-1);
@@ -102,27 +102,21 @@ public class MonteCarloSimulation {
 		else {
 			double decision = Math.max(checkCall, raise);
 			
-			if(decision == checkCall) {
-				return simulateAction(simulation, 1, depth-1);
-			}
-			else if(decision == raise) {
+			if(raise > 80) {
 				return simulateAction(simulation, 2, depth-1);
 			}
+			else if(decision == checkCall) {
+				return simulateAction(simulation, 1, depth-1);
+			}
+			
+
 		}
-		
-
 		return 0;
-
 	}
 	
 	private double propabilityOfFold(double probOfWinning, State simulation) {
 		//System.out.println(simulation.currBet);
-		if(simulation.currBet == 0) {
-			return 0;
-		}
-		else {
-			return(100 - probOfWinning + getRandVal());
-		}
+		return(100 - probOfWinning + getRandVal());
 		
 	}
 
@@ -145,8 +139,6 @@ public class MonteCarloSimulation {
 			outs.add(val += 3.8);
 		}
 		
-		int outsForNext = 0;
-		
 		int cardOne = simulation.getCurrPlayHands().getHand()[0].getRank();
 		int suitOne = simulation.getCurrPlayHands().getHand()[0].getSuit();
 		int cardTwo = simulation.getCurrPlayHands().getHand()[1].getRank();
@@ -155,37 +147,35 @@ public class MonteCarloSimulation {
 		if(simulation.preFlop)
 		{
 			if(hand.isPair()) { //Pör undir og með 7 og ekki ásapar
-				if(cardOne < 7 && cardOne != 0) {
-					return 79.34 + outs.get(1);
+				if(cardOne < 7) {
+					return 54.34 + outs.get(1);
 				}
 				else { //Pör yfir 7 og ásar
-					return 87.43 + outs.get(1);
+					return 60.43 + outs.get(1);
 				}				
 			}
 			else if(suitOne != suitTwo){// Ekki sama suit
-				if(cardOne < 9 && cardTwo < 9) { //Ekki ásar og spil undir 9
-					return 48.5 + outs.get(3);
+				if(cardOne < 7 && cardTwo < 7) { 
+					return 39.25 + outs.get(1);
 				}
-				else if(cardOne >= 9 || cardTwo >= 9) {
-					return 79.5 + outs.get(3);
+				else if((cardOne < 7 && cardTwo >= 7) || (cardOne >= 7 && cardTwo < 7)){
+					return 46.5 + outs.get(1);
+				}
+				else if(cardOne >= 7 || cardTwo >= 7) {
+					return 54.75 + outs.get(1);
 				}
 			}
 			else if (suitOne == suitTwo){//sama suit.
-				if(cardOne < 9 && cardTwo < 9) { //Ekki ásar og spil undir 9
-					return 52.5 + outs.get(3);
+				if(cardOne < 7 && cardTwo < 7) { 
+					return 39.25 + outs.get(1);
 				}
-				else if(cardOne >= 9 && cardTwo >= 9) {
-					return 81.5 + outs.get(3);
+				else if((cardOne < 7 && cardTwo >= 7) || (cardOne >= 7 && cardTwo < 7)){
+					return 46.5 + outs.get(1);
 				}
-				else if(cardOne >= 9 && cardTwo < 9) {
-					return 60.5 + outs.get(3);
-				}
-				else if(cardOne <= 9 && cardTwo >= 9) {
-					return 60.5 + outs.get(3);
+				else if(cardOne >= 7 || cardTwo >= 7) {
+					return 54.75 + outs.get(1);
 				}
 			}
-			else
-				return 50;
 		}
 		else if(simulation.flop) {				
 			if(hand.isRoyalFlush()) {
@@ -210,29 +200,23 @@ public class MonteCarloSimulation {
 				return 80 + outs.get(0) + outs.get(1);
 			}
 			else if(hand.isTwoPairs()){
-				outsForNext = 2;
-				if(cardOne < 7 && cardOne != 0 || cardTwo < 7 && cardTwo != 0) {
-					return 75.34 + outsForNext;
+				if(hand.getFirstMatch().getRank() < 7) {
+					return 75.34 + outs.get(0);
 				}
-				else if(cardOne > 7 || cardOne == 0|| cardTwo > 7 || cardTwo == 0){ //Pör yfir 7 og ásar
-					return 87.43 + outsForNext;
+				else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
+					return 87.43 + outs.get(0);
 				}
 			}				
 			else if(hand.isPair()) {
-				outsForNext = 4;
-				if(cardOne < 7 && cardOne != 0 || cardTwo < 7 && cardTwo != 0) {
-					return 59.34 + outsForNext;
+				if(hand.getFirstMatch().getRank() < 7) {
+					return 55.34 + outs.get(2);
 				}
-				else if(cardOne > 7 || cardOne == 0|| cardTwo > 7 || cardTwo == 0){ //Pör yfir 7 og ásar
-					return 77.43 + outsForNext;
+				else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
+					return 77.43 + outs.get(2);
 				}
-				return 50;
 			}
-			else if(hand.isPair()) {
-				return 50;
-			}
-			else {
-				return 50;
+			else{
+				return 30;
 			}
 		}
 		else if(simulation.turn)
@@ -244,59 +228,83 @@ public class MonteCarloSimulation {
 				return 99;
 			}
 			else if(hand.isFourOfKind()) {
-				return 100;
+				return 95;
 			}
 			else if(hand.isFullHouse()) {
-				return 99;
+				return 90;
 			}
 			else if(hand.isFlush()) {
-				return 50;
+				return 88;
 			}
 			else if(hand.isStraight()) {
-				return 50;
+				return 87;
 			}
 			else if(hand.isThreeOfKind()) {
-				return 50;
+				return 80 + outs.get(0) + outs.get(1);
 			}
+			else if(hand.isTwoPairs()){
+				if(hand.getFirstMatch().getRank() < 7) {
+					return 72.34;
+				}
+				else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
+					return 82.43;
+				}
+			}				
 			else if(hand.isPair()) {
-				return 50;
+				if(hand.getFirstMatch().getRank() < 7) {
+					return 31.34;
+				}
+				else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
+					return 46.43;
+				}
 			}
-			else {
-				return 50;
+			else{
+				return 30;
 			}
 		}
 		else if(simulation.river)
-		{
-			if(hand.isRoyalFlush()) {
-				return 100;
+		{			if(hand.isRoyalFlush()) {
+			return 100;
+		}
+		else if(hand.isStraightFlush()) {
+			return 99;
+		}
+		else if(hand.isFourOfKind()) {
+			return 100;
+		}
+		else if(hand.isFullHouse()) {
+			return 95;
+		}
+		else if(hand.isFlush()) {
+			return 95;
+		}
+		else if(hand.isStraight()) {
+			return 95;
+		}
+		else if(hand.isThreeOfKind()) {
+			return 80 + outs.get(0) + outs.get(1);
+		}
+		else if(hand.isTwoPairs()){
+			if(hand.getFirstMatch().getRank() < 7) {
+				return 63.34;
 			}
-			else if(hand.isStraightFlush()) {
-				return 99;
+			else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
+				return 75.43;
 			}
-			else if(hand.isFourOfKind()) {
-				return 100;
+		}				
+		else if(hand.isPair()) {
+			if(hand.getFirstMatch().getRank() < 7) {
+				return 20.34;
 			}
-			else if(hand.isFullHouse()) {
-				return 99;
-			}
-			else if(hand.isFlush()) {
-				return 50;
-			}
-			else if(hand.isStraight()) {
-				return 50;
-			}
-			else if(hand.isThreeOfKind()) {
-				return 50;
-			}
-			else if(hand.isPair()) {
-				return 50;
-			}
-			else {
-				return 50;
+			else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
+				return 28.43;
 			}
 		}
-		return 50;
-	
+		else{
+			return 15;
+			}
+		}		
+		return 0;	
 	}
 	
 	private int getRandVal() {
