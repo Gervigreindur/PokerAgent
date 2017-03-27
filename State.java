@@ -18,7 +18,7 @@ public class State {
 		playersInRound = new ArrayList<Player>();
 		
 		for(Player p : state.getPlayers()) {
-			Player newPlaya = new Player(p.seeName(), p.seeStack());
+			Player newPlaya = new Player(p);
 			playersInRound.add(newPlaya);
 		}
 		/*		
@@ -46,20 +46,20 @@ public class State {
 		playersInRound = new ArrayList<Player>();
 		int highestBet = 0;
 		for(Player p : board.getPlayers()) {
-			Player newPlaya = new Player(p.seeName(), p.seeStack());
+			Player newPlaya = new Player(p);
 			playersInRound.add(newPlaya);
 			if(p.getCurrBet() > highestBet) {
 				highestBet = p.getCurrBet();
 			}
 		}
 		
-		callCounter = playersInRound.size();
+		/*callCounter = playersInRound.size();
 		//TODO Fix BB pre flop call counter bug.
 		for(int i = 0; i < playersInRound.size(); i++) {
 			if(playersInRound.get(i).getCurrBet() == highestBet) {
 				callCounter--;
 			}
-		}
+		}*/
 		
 		
 		
@@ -76,7 +76,7 @@ public class State {
 		smallBlind = 5;
 		bigBlind = 10;
 		currBet = board.currBet;
-		deck = new Deck();
+		deck = new Deck(board.deck);
 		preFlop = board.preFlop;
 		flop = board.flop;
 		turn = board.turn;
@@ -160,6 +160,7 @@ public class State {
 	}
 	
 	private void incrementCurrPlayer() {
+
 		for(int i = 0; i < playersInRound.size(); i++) {
 			if(playersInRound.get(i).getID() == currPlayer.getID()) {
 				if(i+1 != playersInRound.size()) {
@@ -175,8 +176,10 @@ public class State {
 	private boolean cardsExist(Card c, Player agent) {
 		
 		for(int i = 0; i < agent.getHand().getHand().length; i++) {
-			if(c.equals(agent.getHand().getHand()[i])) {
-				return true;
+			if(agent.getHand().getHand()[i] != null) {
+				if(c.equals(agent.getHand().getHand()[i])) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -186,11 +189,12 @@ public class State {
 		
 		for(Player player : playersInRound) {
 			if(player.getID() != agent.getID()) {
+				player.emptyHand();
 				int counter = 0;
 				while(counter <= 2) {
 					Card c = deck.drawFromDeck();
 					if(!cardsExist(c, agent)) {
-						player.recievesCards(deck.drawFromDeck());
+						player.recievesCards(c);
 						counter++;
 					}
 				}			
@@ -211,13 +215,18 @@ public class State {
 	
 	private void dealCards() {
 		ArrayList<Card> takenCards = new ArrayList<Card>();
+		
 		for(Player p : playersInRound) {
 			for(int i = 0; i < 2; i++) {
-				takenCards.add(new Card(p.getHand().getHand()[i].getSuit(), p.getHand().getHand()[i].getRank()));
+				if(p.getHand().getHand()[i] != null) {
+					takenCards.add(new Card(p.getHand().getHand()[i].getSuit(), p.getHand().getHand()[i].getRank()));
+				}
 			}
 		}
 		for(int i = 2; i < currPlayer.getHand().getHand().length; i++) {
-			takenCards.add(new Card(currPlayer.getHand().getHand()[i].getSuit(), currPlayer.getHand().getHand()[i].getRank()));
+			if(currPlayer.getHand().getHand()[i] != null) {
+				takenCards.add(new Card(currPlayer.getHand().getHand()[i].getSuit(), currPlayer.getHand().getHand()[i].getRank()));
+			}
 		}
 		
 		
@@ -276,6 +285,7 @@ public class State {
 			
 			int diff = currBet - currPlayer.getCurrBet();
 			if(diff > 0) {
+				System.out.println("hérna");
 				currPlayer.madeBet(diff);
 				pot += diff;
 			}
@@ -294,19 +304,20 @@ public class State {
 			for(Player p : playersInRound) {
 				if(p.getID() == currPlayer.getID()) {
 					incrementCurrPlayer();
+					System.out.println("hérna");
 					playersInRound.remove(p);
 					break;
 				}
 			}
 		}
-		
 		changeState();
 	}
 	
 	private void changeState() {
 		//TODO remember the pre flop BB call counter bug
+		System.out.println(callCounter + " " + (playersInRound.size() - 1));
 		if(callCounter == playersInRound.size() - 1) {
-		
+			System.out.println("HÉRNA");
 			if(preFlop) {
 				preFlop = false;
 				flop = true;

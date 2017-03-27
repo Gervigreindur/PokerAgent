@@ -15,6 +15,8 @@ public class Player {
 		this.stack = deposit;
 		hand = new Hand();
 		currBet = 0;
+		myTurn = false;
+		ID = -1;
 	}
 	
 	Player(Player p) {
@@ -23,6 +25,7 @@ public class Player {
 		this.hand = new Hand(p.getHand());
 		this.currBet = p.getCurrBet();
 		this.ID = p.getID();
+		this.myTurn = p.getMyTurn();
 	}
 	
 	public int getCurrBet() {
@@ -35,6 +38,10 @@ public class Player {
 	
 	public boolean getMyTurn() {
 		return myTurn;
+	}
+	
+	public boolean getAllIn() {
+		return stack == 0;
 	}
 	
 	public void setMyTurn() {
@@ -90,7 +97,6 @@ public class Player {
 	//===================================================================================================================
 
 	public String getInput() {
-		
 		return null;
 	}
 }
