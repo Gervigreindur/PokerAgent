@@ -11,7 +11,6 @@ public class MonteCarloSimulation {
 	private int numberOfSimulations;
 	private int check;
 	private int raise;
-	private int fold;
 	private ArrayList<Double> outs;
 
 	public MonteCarloSimulation(Player agent, Board board) {
@@ -19,8 +18,7 @@ public class MonteCarloSimulation {
 		me = agent;
 		numberOfSimulations = 1000;
 		check = 0;
-		raise = 0;
-		fold = 0;		
+		raise = 0;		
 	}
 	
 	public int simulate() {
@@ -29,18 +27,18 @@ public class MonteCarloSimulation {
 			State simulation = new State(myBoard, me);
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
-			check += simulateAction(simulation, 1, 5);
-			raise += simulateAction(simulation, 2, 5);
-			fold += simulateAction(simulation, 3, 5);
+
+			check += simulateAction(simulation, 1, 500);
+			raise += simulateAction(simulation, 2, 500);
+
 		}
 		
 		check = check / numberOfSimulations;
 		raise = raise / numberOfSimulations;
-		fold = fold / numberOfSimulations;
 		
-		System.out.println("Check: " + check + " raise: " + raise + " fold: " + fold);
+		//System.out.println("Check: " + check + " raise: " + raise );
 		
-		return Math.max(Math.max(fold, check), raise);			
+		return Math.max(check, raise);			
 	}
 	
 	public int simulateAction(State simmi, int action, int depth) {
