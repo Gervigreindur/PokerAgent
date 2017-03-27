@@ -25,8 +25,8 @@ public class MonteCarloSimulation {
 			State simulation = new State(myBoard, me);
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
-			check += simulateAction(simulation, 1, 500);
-			raise += simulateAction(simulation, 2, 500);
+			check += simulateAction(simulation, 1, 5);
+			raise += simulateAction(simulation, 2, 5);
 			
 		}
 		

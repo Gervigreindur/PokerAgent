@@ -202,15 +202,15 @@ public class State {
 					}
 				}			
 			}
-			if(flop) {
+			if(flop && player.getID() != agent.getID()) {
 				player.recievesCards(agent.getHand().getHand()[2]);
 				player.recievesCards(agent.getHand().getHand()[3]);
 				player.recievesCards(agent.getHand().getHand()[4]);
 			}
-			else if(turn) {
+			else if(turn && player.getID() != agent.getID()) {
 				player.recievesCards(agent.getHand().getHand()[5]);
 			}
-			else if(river) {
+			else if(river && player.getID() != agent.getID()) {
 				player.recievesCards(agent.getHand().getHand()[6]);
 			}
 		}
