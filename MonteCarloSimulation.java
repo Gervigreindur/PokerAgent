@@ -54,7 +54,7 @@ public class MonteCarloSimulation {
 	
 	public int simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
-			//System.out.println("depth");
+			System.out.println("depth");
 			return 1;}
 		
 		if(simmi.isTerminal()) {
@@ -66,9 +66,9 @@ public class MonteCarloSimulation {
 		
 		double prob = propabilityWinPercentage(simulation);
 		
-		//int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
+		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
 		
-		//prob -= ((numberOfPeopleInRound-1) * 7.75);
+		prob -= ((numberOfPeopleInRound-1) * 3.75);
 		
 		double foldProb = propabilityOfFold(prob);
 		double checkCall = propabilityOfCheckCall(prob);
@@ -131,16 +131,29 @@ public class MonteCarloSimulation {
 				}				
 			}
 			else if(suitOne != suitTwo){// Ekki sama suit
-				if(cardOne < 9 && cardOne != 0 || cardTwo < 9 && cardTwo != 0) { //Ekki ásar og spil undir 9
+				if(cardOne < 9 && cardTwo < 9) { //Ekki ásar og spil undir 9
 					return 48.5 + outs.get(3);
 				}
-				else if((cardOne >= 9 || cardOne == 0 ) || (cardTwo >= 9 || cardTwo == 0) ) {
+				else if(cardOne >= 9 || cardTwo >= 9) {
 					return 79.5 + outs.get(3);
 				}
 			}
-			else {//sama suit.
-				return 50 + outs.get(3);
+			else if (suitOne == suitTwo){//sama suit.
+				if(cardOne < 9 && cardTwo < 9) { //Ekki ásar og spil undir 9
+					return 52.5 + outs.get(3);
+				}
+				else if(cardOne >= 9 && cardTwo >= 9) {
+					return 81.5 + outs.get(3);
+				}
+				else if(cardOne >= 9 && cardTwo < 9) {
+					return 60.5 + outs.get(3);
+				}
+				else if(cardOne <= 9 && cardTwo >= 9) {
+					return 60.5 + outs.get(3);
+				}
 			}
+			else
+				return 50;
 		}
 		else if(simulation.flop) {				
 			if(hand.isRoyalFlush()) {
