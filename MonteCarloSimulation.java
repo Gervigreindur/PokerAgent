@@ -28,8 +28,8 @@ public class MonteCarloSimulation {
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 
-			check += simulateAction(simulation, 1, 1000);
-			raise += simulateAction(simulation, 2, 1000);
+			check += simulateAction(simulation, 1, 10000);
+			raise += simulateAction(simulation, 2, 10000);
 
 		}
 		
@@ -39,14 +39,18 @@ public class MonteCarloSimulation {
 		System.out.println("Check: " + check + " raise: " + raise );
 		double result = Math.max(check, raise);
 		System.out.println(result);
+				
+		if(myBoard.getCurrBet() == 0 && result < 0) {
+			return 1;
+		}
 		if(result < 0) {
 			return 3;
 		}
-		if(result == raise) {
-			return 2;
+		if(result == check) {
+			return 1;
 		}
 		else {
-			return 1;
+			return 2;
 		}
 	}
 	
@@ -199,14 +203,13 @@ public class MonteCarloSimulation {
 				else if(cardOne > 7 || cardOne == 0|| cardTwo > 7 || cardTwo == 0){ //Pör yfir 7 og ásar
 					return 77.43 + outsForNext;
 				}
-				return 0;
+				return 50;
 			}
-			if(hand.isPair()) {
-				return 0;
-
+			else if(hand.isPair()) {
+				return 50;
 			}
 			else {
-				return 5;
+				return 50;
 			}
 		}
 		else if(simulation.turn)
@@ -232,11 +235,11 @@ public class MonteCarloSimulation {
 			else if(hand.isThreeOfKind()) {
 				return 50;
 			}
-			if(hand.isPair()) {
-				return 30;
+			else if(hand.isPair()) {
+				return 50;
 			}
 			else {
-				return 10;
+				return 50;
 			}
 		}
 		else if(simulation.river)
@@ -262,14 +265,14 @@ public class MonteCarloSimulation {
 			else if(hand.isThreeOfKind()) {
 				return 50;
 			}
-			if(hand.isPair()) {
-				return 30;
+			else if(hand.isPair()) {
+				return 50;
 			}
 			else {
-				return 10;
+				return 50;
 			}
 		}
-		return 0;
+		return 50;
 	
 	}
 	

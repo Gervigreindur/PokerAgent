@@ -124,6 +124,7 @@ public class State {
 			}
 		}
 		else if(river) {
+			System.out.println("ég er inní river!!!");
 			int best = -1;
 			ArrayList<Player> winners = new ArrayList<Player>();
 			//Evaluate best hand 
@@ -207,6 +208,7 @@ public class State {
 					}
 				}			
 			}
+						
 			if(flop && player.getID() != agent.getID()) {
 				player.recievesCards(agent.getHand().getHand()[2]);
 				player.recievesCards(agent.getHand().getHand()[3]);
