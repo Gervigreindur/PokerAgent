@@ -38,7 +38,7 @@ public class MonteCarloSimulation {
 	}
 	
 	public int simulateAction(State simmi, int action, int depth) {
-		if(depth == 0) {return 0;}
+		if(depth == 0) {return 1;}
 		
 		if(simmi.isTerminal()) {
 			return simmi.terminal(me);

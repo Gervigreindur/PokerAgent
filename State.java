@@ -87,6 +87,7 @@ public class State {
 	}
 	
 	public boolean isTerminal() {
+		System.out.println(playersInRound.size());
 		if(playersInRound.size() == 1) {
 			return true;
 		}
@@ -229,9 +230,6 @@ public class State {
 				takenCards.add(new Card(currPlayer.getHand().getHand()[i].getSuit(), currPlayer.getHand().getHand()[i].getRank()));
 			}
 		}
-		
-		
-		
 		if(flop) {
 			for(Player p : playersInRound) {
 				int counter = 0;
@@ -240,8 +238,6 @@ public class State {
 					boolean checker = true;
 					Card c = deck.drawFromDeck();
 					for(Card card : takenCards) {
-						
-						
 						if(c.equals(card)) {
 							checker = false;
 							break;
