@@ -28,8 +28,8 @@ public class MonteCarloSimulation {
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 
-			check += simulateAction(simulation, 1, 10000);
-			raise += simulateAction(simulation, 2, 10000);
+			check += simulateAction(simulation, 1, 10);
+			raise += simulateAction(simulation, 2, 10);
 
 		}
 		
@@ -57,9 +57,9 @@ public class MonteCarloSimulation {
 	
 	public int simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
-			/*System.out.println("depth");
-			System.out.println(simmi.getNumberOfPLayersInRound());
-*/
+			//System.out.println("depth");
+			//System.out.println(simmi.getNumberOfPLayersInRound());
+
 			return 0;
 		}
 		
@@ -80,7 +80,11 @@ public class MonteCarloSimulation {
 			
 			double foldProb = propabilityOfFold(prob, simulation);
 			double checkCall = propabilityOfCheckCall(prob);
-			double raise = propabilityOfRaise(prob);
+			double raise;
+			if(simulation.getCurrPlayer().getCurrBet() >= 1) {
+				raise = 0;
+			}
+			raise = propabilityOfRaise(prob);
 			
 			double decision = Math.max(Math.max(foldProb, checkCall), raise);
 			

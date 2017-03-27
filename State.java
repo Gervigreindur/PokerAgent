@@ -34,7 +34,7 @@ public class State {
 		smallBlind = 5;
 		bigBlind = 10;
 		currBet = state.currBet;
-		deck = new Deck(state.deck);
+		deck = new Deck();
 		preFlop = state.preFlop;
 		flop = state.flop;
 		turn = state.turn;
@@ -82,7 +82,7 @@ public class State {
 		smallBlind = 5;
 		bigBlind = 10;
 		currBet = board.currBet;
-		deck = new Deck(board.deck);
+		deck = new Deck();
 		preFlop = board.preFlop;
 		flop = board.flop;
 		turn = board.turn;
@@ -125,6 +125,7 @@ public class State {
 			}
 		}
 		else if(river) {
+			//System.out.println("river");
 			int best = -1;
 			ArrayList<Player> winners = new ArrayList<Player>();
 			//Evaluate best hand 
@@ -300,6 +301,7 @@ public class State {
 			callCounter = 0;
 			currBet += bigBlind;
 			currPlayer.madeBet(currBet);
+			currPlayer.setRaiseCounter(currPlayer.getRaiseCounter() + 1);
 			pot += currBet;
 			incrementCurrPlayer();
 		}
@@ -332,7 +334,9 @@ public class State {
 					turn = false;
 					river = true;
 				}
-
+				for(Player p : playersInRound) {
+					p.setRaiseCounter(0);
+				}
 				currPlayer = new Player(playersInRound.get(0));
 				dealCards();
 				currBet = 0;	
