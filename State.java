@@ -318,29 +318,30 @@ public class State {
 	
 	private void changeState() {
 		//TODO remember the pre flop BB call counter bug
-		
-		if((raise && callCounter == playersInRound.size() -1) || (!raise && callCounter == playersInRound.size())) {
+		if(playersInRound.size() != 1) {
+			if((raise && callCounter == playersInRound.size() -1) || (!raise && callCounter == playersInRound.size())) {
 
-			if(preFlop) {
-				preFlop = false;
-				flop = true;
-			}
-			else if(flop) {
-				flop = false;
-				turn = true;
-			}
-			else if(turn) {
-				turn = false;
-				river = true;
-			}
+				if(preFlop) {
+					preFlop = false;
+					flop = true;
+				}
+				else if(flop) {
+					flop = false;
+					turn = true;
+				}
+				else if(turn) {
+					turn = false;
+					river = true;
+				}
 
-			currPlayer = new Player(playersInRound.get(0));
-			dealCards();
+				currPlayer = new Player(playersInRound.get(0));
+				dealCards();
+					
+				raise = false;
+				callCounter = 0;
 				
-			raise = false;
-			callCounter = 0;
-			
-		}	
+			}	
+		}
 	}
 /*
 	private boolean checkForWinner() {
