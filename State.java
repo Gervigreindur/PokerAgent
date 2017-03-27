@@ -54,7 +54,10 @@ public class State {
 			}
 		}
 		
+
+		/*callCounter = playersInRound.size();
 		callCounter = 0;
+
 		//TODO Fix BB pre flop call counter bug.
 		for(int i = 0; i < playersInRound.size(); i++) {
 			if(playersInRound.get(i).getCurrBet() == highestBet) {
@@ -62,7 +65,7 @@ public class State {
 					callCounter++;
 				}			
 			}
-		}
+		}*/
 		
 		
 		
@@ -84,10 +87,11 @@ public class State {
 		flop = board.flop;
 		turn = board.turn;
 		river = board.river;
+
 	}
 	
 	public boolean isTerminal() {
-		
+
 		if(playersInRound.size() == 1) {
 			return true;
 		}
@@ -98,8 +102,10 @@ public class State {
 				}
 			}
 			return true;
-		}
+
+		}			
 				
+
 		return false;
 	}
 	
@@ -123,7 +129,7 @@ public class State {
 			ArrayList<Player> winners = new ArrayList<Player>();
 			//Evaluate best hand 
 			for(Player player : playersInRound) {
-				int value = player.getHandValue();
+				int value = player.getHandValueSimulation();
 				if(value == best) {
 					winners.add(player);
 				}
@@ -163,13 +169,14 @@ public class State {
 	}
 	
 	private void incrementCurrPlayer() {
+
 		for(int i = 0; i < playersInRound.size(); i++) {
 			if(playersInRound.get(i).getID() == currPlayer.getID()) {
 				if(i+1 != playersInRound.size()) {
-					currPlayer = new Player(playersInRound.get(i+1));
+					currPlayer = playersInRound.get(i+1);
 				}
 				else {
-					currPlayer = new Player(playersInRound.get(0));
+					currPlayer = playersInRound.get(i);
 				}
 				break;
 			}
@@ -218,6 +225,7 @@ public class State {
 	
 	private void dealCards() {
 		ArrayList<Card> takenCards = new ArrayList<Card>();
+		
 		for(Player p : playersInRound) {
 			for(int i = 0; i < 2; i++) {
 				if(p.getHand().getHand()[i] != null) {
@@ -310,7 +318,9 @@ public class State {
 	
 	private void changeState() {
 		//TODO remember the pre flop BB call counter bug
+		
 		if((raise && callCounter == playersInRound.size() -1) || (!raise && callCounter == playersInRound.size())) {
+
 			if(preFlop) {
 				preFlop = false;
 				flop = true;
@@ -330,8 +340,7 @@ public class State {
 			raise = false;
 			callCounter = 0;
 			
-		}
-		
+		}	
 	}
 /*
 	private boolean checkForWinner() {

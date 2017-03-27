@@ -96,10 +96,6 @@ public class Board {
 					player.recievesCards(deck.drawFromDeck());
 					
 					System.out.println(player.seeName() + "'s cards: " + player.seeCards());
-					if(player.getHand().getHand()[0].getRank() > 9)
-					{
-						System.out.println("HERNA!!!! "  + player.getHand().getHand()[0].getRank());
-					}
 				}
 				
 				playersInRound.addAll(playersInGame);

@@ -59,8 +59,7 @@ public class Hand {
 			if(c != null) {
 				result += c.toString() + " - ";
 			}
-		}
-		
+		}		
 		return result;
 	}
 	
@@ -268,7 +267,6 @@ public class Hand {
 		Card diamond = null;
 		Card club = null;
 		
-		
 		for(int i = 0; i < hand.length; i++) {
 			if(hand[i] != null) {
 				if(hand[i].getSuit() == 0) {
@@ -404,4 +402,62 @@ public class Hand {
 				}
 		}
 	}
+	public int valueOfHandSimulation() {
+		sortHand();
+		
+		if(isRoyalFlush()) {
+	
+			return 900;
+		}
+		else if(isStraightFlush()) {
+			// 800 + (279JA = 14, 23567 = 7)
+	
+			return 800 + firstMatch.getRank() + 2;
+		}
+		else if(isFourOfKind()) {
+			// 700 + (AAAA = 14, 5555 = 5) + highCard
+	
+			return 700 + firstMatch.getRank() + 2 + getHighCard(firstMatch, null).getRank() + 2;
+		}
+		else if(isFullHouse()) {
+			// "When comparing full houses, the rank of the three cards determines which is higher. For example 9-9-9-4-4 beats 8-8-8-A-A"
+			// 600 + (KKK AA = 13, AAA KK = 14)
+	
+			return 600 + firstMatch.getRank() + 2;
+		}
+		else if(isFlush()) {
+			// 500 + (279JA = 14, 23567 = 7)
+			
+			return 500 + firstMatch.getRank() + 2;
+		}
+		else if(isStraight()) {
+			// 400 + (23456 = 6, 10JQKA = 14)
+	
+			return 400 + firstMatch.getRank() + 2;
+		}
+		else if(isThreeOfKind()) {
+			//300 + (KKK = 13, 777 = 7) + highCard
+	
+			return 300 + firstMatch.getRank() + 2 + getHighCard(firstMatch, null).getRank() + 2;
+		}
+		else if(isTwoPairs()) {
+			//200 + (KK AA = 13 + 14 = 27, 77 88 = 7 + 8 = 15) + highCard
+			
+			return 200 + firstMatch.getRank() + 2 + secondMatch.getRank() + 2 + getHighCard(firstMatch, secondMatch).getRank() + 2;
+		}
+		else if(isPair()) {
+			//there are 13 different pairs. the value of the pair is 100 + the rank of the pair(KK = 12, 88 = 8) plus the value of the highcard
+
+			return 100 + firstMatch.getRank() + 2 + getHighCard(firstMatch, null).getRank() + 2;
+		}
+		else {
+			//1-13
+			//we add two to the result since the cards' rank is stored in an array so the rank of 2 would be 0 but we want it to be 2
+
+			return highCard() + 2;
+		}
+	}
+
 }
+
+	
