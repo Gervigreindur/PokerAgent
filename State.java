@@ -96,6 +96,7 @@ public class State {
 			return true;
 		}
 		else if(river) {
+			
 			for(Player p : playersInRound) {
 				if(p.getCurrBet() != currBet) {
 					return false;
@@ -124,7 +125,6 @@ public class State {
 			}
 		}
 		else if(river) {
-			System.out.println("ég er inní river!!!");
 			int best = -1;
 			ArrayList<Player> winners = new ArrayList<Player>();
 			//Evaluate best hand 
@@ -225,7 +225,6 @@ public class State {
 	
 	private void dealCards() {
 		ArrayList<Card> takenCards = new ArrayList<Card>();
-		
 		for(Player p : playersInRound) {
 			for(int i = 0; i < 2; i++) {
 				if(p.getHand().getHand()[i] != null) {
@@ -242,7 +241,7 @@ public class State {
 			for(Player p : playersInRound) {
 				int counter = 0;
 				
-				while(counter <= 3) {
+				while(counter < 3) {
 					boolean checker = true;
 					Card c = deck.drawFromDeck();
 					for(Card card : takenCards) {
@@ -252,7 +251,7 @@ public class State {
 						}
 					}
 					if(checker) {
-						p.recievesCards(deck.drawFromDeck());
+						p.recievesCards(c);
 						counter++;
 					}
 				}
@@ -272,7 +271,7 @@ public class State {
 						}
 					}
 					if(checker) {
-						p.recievesCards(deck.drawFromDeck());
+						p.recievesCards(c);
 						counter++;
 					}
 				}
