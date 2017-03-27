@@ -208,6 +208,7 @@ public class State {
 					}
 				}			
 			}
+						
 			if(flop && player.getID() != agent.getID()) {
 				player.recievesCards(agent.getHand().getHand()[2]);
 				player.recievesCards(agent.getHand().getHand()[3]);
@@ -455,4 +456,12 @@ public class State {
 	public ArrayList<Player> getPlayers() {
 		return playersInRound;
 	}
+
+	/**
+	 * @return the currPlayer
+	 */
+	public Player getCurrPlayer() {
+		return currPlayer;
+	}
+	
 }

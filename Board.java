@@ -84,7 +84,6 @@ public class Board {
 		try {
 			int bla = ble.read();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -422,5 +421,9 @@ public class Board {
 	}
 	public Board getBoard() {
 		return this;
+	}
+	
+	public int getCurrBet() {
+		return currBet;
 	}
 }
