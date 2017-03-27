@@ -96,7 +96,7 @@ public class State {
 			return true;
 		}
 		else if(river) {
-			
+			//System.out.println("river Is terminal");
 			for(Player p : playersInRound) {
 				if(p.getCurrBet() != currBet) {
 					return false;
@@ -109,7 +109,7 @@ public class State {
 		return false;
 	}
 	
-	public int terminal(Player me) {
+	public double terminal(Player me) {
 		/*TODO Make two terminal states:
 		 * One returns 1 for win, 0 for draw and -1 for loss
 		 * The other one returns the pot for win and 0 for loss
@@ -141,7 +141,7 @@ public class State {
 			
 			if(winners.isEmpty()) {
 				for(Player player : playersInRound) {
-					if(player.getID() == me.getID()) {
+					if(player.getID() == me.getID()) {					
 						return 1;
 					}
 					else {
@@ -301,7 +301,7 @@ public class State {
 			callCounter = 0;
 			currBet += bigBlind;
 			currPlayer.madeBet(currBet);
-			currPlayer.setRaiseCounter(currPlayer.getRaiseCounter() + 1);
+			currPlayer.setRaiseCounter(1);
 			pot += currBet;
 			incrementCurrPlayer();
 		}

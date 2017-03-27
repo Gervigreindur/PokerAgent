@@ -30,6 +30,7 @@ public class MonteCarloSimulation {
 
 			check += simulateAction(simulation, 1, 1000);
 			raise += simulateAction(simulation, 2, 1000);
+
 		}
 		
 		check = check / numberOfSimulations;
@@ -60,6 +61,7 @@ public class MonteCarloSimulation {
 		}
 		
 		if(simmi.isTerminal()) {
+			
 			return simmi.terminal(me);
 		}
 		
@@ -105,6 +107,7 @@ public class MonteCarloSimulation {
 				return simulateAction(simulation, 1, depth-1);
 			}
 			
+
 		}
 		return 0;
 	}
@@ -143,32 +146,32 @@ public class MonteCarloSimulation {
 		{
 			if(hand.isPair()) { //Pör undir og með 7 og ekki ásapar
 				if(cardOne < 7) {
-					return 60.34 + outs.get(1);
+					return 54.34 + outs.get(1);
 				}
 				else { //Pör yfir 7 og ásar
-					return 78.43 + outs.get(1);
+					return 60.43 + outs.get(1);
 				}				
 			}
 			else if(suitOne != suitTwo){// Ekki sama suit
 				if(cardOne < 7 && cardTwo < 7) { 
-					return 44.25 + outs.get(3);
+					return 39.25 + outs.get(1);
 				}
 				else if((cardOne < 7 && cardTwo >= 7) || (cardOne >= 7 && cardTwo < 7)){
-					return 56.5 + outs.get(3);
+					return 46.5 + outs.get(1);
 				}
 				else if(cardOne >= 7 || cardTwo >= 7) {
-					return 60.75 + outs.get(3);
+					return 54.75 + outs.get(1);
 				}
 			}
 			else if (suitOne == suitTwo){//sama suit.
 				if(cardOne < 7 && cardTwo < 7) { 
-					return 44.25 + outs.get(5);
+					return 39.25 + outs.get(1);
 				}
 				else if((cardOne < 7 && cardTwo >= 7) || (cardOne >= 7 && cardTwo < 7)){
-					return 56.5 + outs.get(5);
+					return 46.5 + outs.get(1);
 				}
 				else if(cardOne >= 7 || cardTwo >= 7) {
-					return 60.75 + outs.get(5);
+					return 54.75 + outs.get(1);
 				}
 			}
 		}
@@ -239,18 +242,18 @@ public class MonteCarloSimulation {
 			}
 			else if(hand.isTwoPairs()){
 				if(hand.getFirstMatch().getRank() < 7) {
-					return 75.34;
+					return 72.34;
 				}
 				else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
-					return 87.43;
+					return 82.43;
 				}
 			}				
 			else if(hand.isPair()) {
 				if(hand.getFirstMatch().getRank() < 7) {
-					return 35.34;
+					return 31.34;
 				}
 				else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
-					return 47.43;
+					return 46.43;
 				}
 			}
 			else{
@@ -281,22 +284,22 @@ public class MonteCarloSimulation {
 		}
 		else if(hand.isTwoPairs()){
 			if(hand.getFirstMatch().getRank() < 7) {
-				return 75.34;
+				return 63.34;
 			}
 			else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
-				return 87.43;
+				return 75.43;
 			}
 		}				
 		else if(hand.isPair()) {
 			if(hand.getFirstMatch().getRank() < 7) {
-				return 28.34;
+				return 20.34;
 			}
 			else if(hand.getFirstMatch().getRank() >= 7){ //Pör yfir 7 og ásar
-				return 38.43;
+				return 28.43;
 			}
 		}
 		else{
-			return 20;
+			return 15;
 			}
 		}		
 		return 0;	
