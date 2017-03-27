@@ -57,7 +57,7 @@ public class MonteCarloSimulation {
 	public double simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
 			//System.out.println("depth");
-			return 0;
+			return 1*propabilityWinPercentage(simmi);
 		}
 		
 		if(simmi.isTerminal()) {
