@@ -90,7 +90,7 @@ public class MonteCarloSimulation {
 
 	}
 	
-	private double propabilityOfFold(double probOfWinning) {		
+	private double propabilityOfFold(double probOfWinning) {
 		return(100 - probOfWinning + getRandVal());
 	}
 
