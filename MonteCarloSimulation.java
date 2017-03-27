@@ -35,8 +35,16 @@ public class MonteCarloSimulation {
 		raise = raise / numberOfSimulations;
 		
 		//System.out.println("Check: " + check + " raise: " + raise );
-		
-		return Math.max(check, raise);			
+		int result = Math.max(check, raise);	
+		if(result < 0) {
+			return 3;
+		}
+		if(result == raise) {
+			return 2;
+		}
+		else {
+			return 1;
+		}
 	}
 	
 	public int simulateAction(State simmi, int action, int depth) {
@@ -50,8 +58,6 @@ public class MonteCarloSimulation {
 		simulation.takeAction(action);
 		
 		double prob = propabilityWinPercentage(simulation.getCurrPlayHands());
-		
-		//double prob = 70;
 		
 		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
 		
