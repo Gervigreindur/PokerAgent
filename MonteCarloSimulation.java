@@ -9,8 +9,8 @@ public class MonteCarloSimulation {
 	private Player me;
 
 	private int numberOfSimulations;
-	private int check;
-	private int raise;
+	private double check;
+	private double raise;
 	private ArrayList<Double> outs;
 
 	public MonteCarloSimulation(Player agent, Board board) {
@@ -28,16 +28,19 @@ public class MonteCarloSimulation {
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
 
-			check += simulateAction(simulation, 1, 500);
-			raise += simulateAction(simulation, 2, 500);
+			check += simulateAction(simulation, 1, 1000);
+			raise += simulateAction(simulation, 2, 1000);
 
 		}
+		
+		System.out.println("Check: " + check + " raise: " + raise );
 		
 		check = check / numberOfSimulations;
 		raise = raise / numberOfSimulations;
 		
-		//System.out.println("Check: " + check + " raise: " + raise );
-		int result = Math.max(check, raise);	
+		System.out.println("Check: " + check + " raise: " + raise );
+		double result = Math.max(check, raise);
+		System.out.println(result);
 		if(result < 0) {
 			return 3;
 		}
@@ -50,7 +53,9 @@ public class MonteCarloSimulation {
 	}
 	
 	public int simulateAction(State simmi, int action, int depth) {
-		if(depth == 0) {return 1;}
+		if(depth == 0) {
+			//System.out.println("depth");
+			return 1;}
 		
 		if(simmi.isTerminal()) {
 			return simmi.terminal(me);
@@ -59,11 +64,11 @@ public class MonteCarloSimulation {
 		State simulation = new State(simmi);
 		simulation.takeAction(action);
 		
-		double prob = propabilityWinPercentage(simulation.getCurrPlayHands());
+		double prob = propabilityWinPercentage(simulation);
 		
-		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
+		//int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
 		
-		prob -= ((numberOfPeopleInRound-1) * 7.75);
+		//prob -= ((numberOfPeopleInRound-1) * 7.75);
 		
 		double foldProb = propabilityOfFold(prob);
 		double checkCall = propabilityOfCheckCall(prob);
@@ -97,7 +102,9 @@ public class MonteCarloSimulation {
 		return(probOfWinning + getRandVal());
 	}
 	
-	private double propabilityWinPercentage(Hand hand) {
+	private double propabilityWinPercentage(State simulation) {
+		
+		Hand hand = simulation.getCurrPlayHands();
 		
 		outs = new ArrayList<Double>();	
 		double val = 0;
@@ -107,36 +114,35 @@ public class MonteCarloSimulation {
 		}
 		
 		int outsForNext = 0;
-		int numberOfCardsOnPLayer = hand.getNumberOfCardsOnPlayer();
 		
-		int cardOne = hand.getHand()[0].getRank();
-		int rankOne = hand.getHand()[0].getSuit();
-		int cardTwo = hand.getHand()[1].getRank();
-		int rankTwo = hand.getHand()[1].getSuit();
+		int cardOne = simulation.getCurrPlayHands().getHand()[0].getRank();
+		int suitOne = simulation.getCurrPlayHands().getHand()[0].getSuit();
+		int cardTwo = simulation.getCurrPlayHands().getHand()[1].getRank();
+		int suitTwo = simulation.getCurrPlayHands().getHand()[1].getSuit();
 		
-		if(hand.getNumberOfCardsOnPlayer() == 2)
+		if(simulation.preFlop)
 		{
 			if(hand.isPair()) { //Pör undir og með 7 og ekki ásapar
 				if(cardOne < 7 && cardOne != 0) {
-					return 59.34 + outs.get(1);
+					return 79.34 + outs.get(1);
 				}
 				else { //Pör yfir 7 og ásar
-					return 77.43 + outs.get(1);
+					return 87.43 + outs.get(1);
 				}				
 			}
-			else if(rankOne != rankTwo){// Ekki sama suit
+			else if(suitOne != suitTwo){// Ekki sama suit
 				if(cardOne < 9 && cardOne != 0 || cardTwo < 9 && cardTwo != 0) { //Ekki ásar og spil undir 9
-					return 38.5 + outs.get(3);
+					return 48.5 + outs.get(3);
 				}
 				else if((cardOne >= 9 || cardOne == 0 ) || (cardTwo >= 9 || cardTwo == 0) ) {
-					return 59.5 + outs.get(3);
+					return 79.5 + outs.get(3);
 				}
 			}
 			else {//sama suit.
-				return 22 + outs.get(3);
+				return 50 + outs.get(3);
 			}
 		}
-		else if(numberOfCardsOnPLayer == 5) {				
+		else if(simulation.flop) {				
 			if(hand.isRoyalFlush()) {
 				return 100;
 			}
@@ -185,7 +191,7 @@ public class MonteCarloSimulation {
 				return 5;
 			}
 		}
-		else if(numberOfCardsOnPLayer == 6)
+		else if(simulation.turn)
 		{
 			if(hand.isRoyalFlush()) {
 				return 100;
@@ -215,7 +221,7 @@ public class MonteCarloSimulation {
 				return 10;
 			}
 		}
-		else
+		else if(simulation.river)
 		{
 			if(hand.isRoyalFlush()) {
 				return 100;

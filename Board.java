@@ -377,7 +377,7 @@ public class Board {
 					}
 					if(currPlayer.getAllIn()) { players--; }
 				}
-				System.out.println("------");
+				//System.out.println("------");
 				if(betCounter == players) { break; }
 			}
 		}

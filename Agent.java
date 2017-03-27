@@ -11,7 +11,7 @@ public class Agent extends Player {
 	}
 	
 	public String getInput() {
-		System.out.println(Integer.toString(monteCarloSimulation()));
+		//System.out.println(Integer.toString(monteCarloSimulation()));
 		return Integer.toString(monteCarloSimulation());
 	}
 	

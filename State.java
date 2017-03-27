@@ -102,7 +102,6 @@ public class State {
 				}
 			}
 			return true;
-
 		}			
 				
 
@@ -159,7 +158,7 @@ public class State {
 				}
 			}
 		}
-		
+		System.out.println("inní terminal() fyrir framan return 0");
 		return 0;
 		
 	}
@@ -201,7 +200,7 @@ public class State {
 			if(player.getID() != agent.getID()) {
 				player.emptyHand();
 				int counter = 0;
-				while(counter <= 2) {
+				while(counter < 2) {
 					Card c = deck.drawFromDeck();
 					if(!cardsExist(c, agent)) {
 						player.recievesCards(c);
