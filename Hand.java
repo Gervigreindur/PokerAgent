@@ -395,15 +395,13 @@ public class Hand {
 	
 	public void getStraight(ArrayList<Card> tmpHand) {
 		for(int i = 0; i <= tmpHand.size() - 5; i++) {
-			if(i+4 <= tmpHand.size()-5) {
-				if(tmpHand.get(i).getRank()-1 == tmpHand.get(i+1).getRank() &&
-						tmpHand.get(i+1).getRank()-1 == tmpHand.get(i+2).getRank() &&
-					tmpHand.get(i+2).getRank()-1 == tmpHand.get(i+3).getRank() &&
-					tmpHand.get(i+3).getRank()-1 == tmpHand.get(i+4).getRank()) {
-						firstMatch = tmpHand.get(i);
-						break;
-					}
-			}
+			if(tmpHand.get(i).getRank()-1 == tmpHand.get(i+1).getRank() &&
+					tmpHand.get(i+1).getRank()-1 == tmpHand.get(i+2).getRank() &&
+				tmpHand.get(i+2).getRank()-1 == tmpHand.get(i+3).getRank() &&
+				tmpHand.get(i+3).getRank()-1 == tmpHand.get(i+4).getRank()) {
+					firstMatch = tmpHand.get(i);
+					break;
+				}
 		}
 	}
 }

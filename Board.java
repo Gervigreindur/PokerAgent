@@ -204,7 +204,7 @@ public class Board {
 		ArrayList<Player> toRemove = new ArrayList<Player>();
 		
 		for(Player p : playersInGame) {
-			if(p.seeStack() == 0) {
+			if(p.getAllIn()) {
 				toRemove.add(p);
 			}
 			else {
@@ -281,6 +281,7 @@ public class Board {
 
 		int bb = bigBlind;
 		int sb = smallBlind;
+		currBet = bigBlind;
 		
 		Player BB = playersInRound.get(playersInRound.size() - 1);
 		Player SB = playersInRound.get(playersInRound.size() - 2);
@@ -376,10 +377,7 @@ public class Board {
 						else {System.out.println(currPlayer.seeName() + " checked");} //check
 						betCounter++;
 					}
-				}
-				else { 
-					System.out.println(currPlayer.seeName() + " is all in already");
-					betCounter++; 
+					if(currPlayer.getAllIn()) { players--; }
 				}
 				System.out.println("------");
 				if(betCounter == players) { break; }
