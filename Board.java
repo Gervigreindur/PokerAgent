@@ -101,7 +101,7 @@ public class Board {
 					player.recievesCards(deck.drawFromDeck());
 					player.recievesCards(deck.drawFromDeck());
 					
-					System.out.println(player.seeName() + "'s cards: " + player.seeCards());
+					System.out.println(player.seeName() + "'s cards: \t\t" + player.seeCards());
 				}
 				
 				playersInRound.addAll(playersInGame);
@@ -131,7 +131,7 @@ public class Board {
 					p.recievesCards(card1);
 					p.recievesCards(card2);
 					p.recievesCards(card3);
-					System.out.println(p.seeName() + "'s cards: " + p.seeCards());
+					System.out.println(p.seeName() + "'s cards: \t\t" + p.seeCards());
 				}
 				System.out.print("Table:: ");
 				for(int i = 0; i < 3; i++) {
@@ -156,7 +156,7 @@ public class Board {
 				table[3] = card4;
 				for(Player p : playersInRound) {
 					p.recievesCards(card4);
-					System.out.println(p.seeName() + "'s cards: " + p.seeCards());
+					System.out.println(p.seeName() + "'s cards: \t\t" + p.seeCards());
 				}
 				System.out.print("Table:: ");
 				for(int i = 0; i < 4; i++) {
@@ -181,7 +181,7 @@ public class Board {
 				table[4] = card5;
 				for(Player p : playersInRound) {
 					p.recievesCards(card5);
-					System.out.println(p.seeName() + "'s cards: " + p.seeCards());
+					System.out.println(p.seeName() + "'s cards: \t\t" + p.seeCards());
 				}
 				
 				System.out.print("Table:: ");

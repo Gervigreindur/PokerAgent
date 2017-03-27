@@ -65,9 +65,9 @@ public class Hand {
 	
 	public String getCards() {
 		String result = "";
-		for(Card c : hand) {
-			if(c != null) {
-				result += c.toString() + " - ";
+		for(int i = 0; i < 2; i++) {
+			if(hand[i] != null) {
+				result += hand[i].toString() + " - ";
 			}
 		}		
 		return result;

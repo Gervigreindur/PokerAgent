@@ -39,15 +39,16 @@ public class MonteCarloSimulation {
 		
 		System.out.println("Check: " + check + " raise: " + raise );
 		double result = Math.max(check, raise);
+		double minResult = Math.min(check, raise);
 		//System.out.println(result);
 
-		if(myBoard.getCurrBet() - me.getCurrBet() <= 5 && result < 0) {
+		if(myBoard.getCurrBet() - me.getCurrBet() <= 5 && minResult < 0) {
 			return 1;
 		}
-		if(result < 0) { 
+		if(minResult < 0) { 
 			return 3;
 		}
-		if(result == check) {
+		if(minResult == check) {
 			return 1;
 		}
 		else {
@@ -57,7 +58,39 @@ public class MonteCarloSimulation {
 	
 	public double simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
-			return 1*propabilityWinPercentage(simmi);
+			double prob = propabilityWinPercentage(simmi);
+			if(simmi.preFlop) {
+				if(prob < 25) {
+					return -1*prob;
+				}
+				else {
+					return 1*prob;
+				}
+			}
+			if(simmi.flop) {
+				if(prob <= 30) {
+					return -1*prob;
+				}
+				else {
+					return 1*prob;
+				}
+			}
+			if(simmi.turn) {
+				if(prob < 37) {
+					return -1*prob;
+				}
+				else {
+					return 1*prob;
+				}
+			}
+			if(simmi.river) {
+				if(prob < 20) {
+					return -1*prob;
+				}
+				else {
+					return 1*prob;
+				}
+			}
 		}
 		
 		if(simmi.isTerminal()) {
