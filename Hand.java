@@ -33,6 +33,14 @@ public class Hand {
 		this.cardCounter = hand.cardCounter;
 	}
 	
+	public Card getFirstMatch(){
+		return this.firstMatch;
+	}
+	
+	public Card getsecondMatch(){
+		return this.secondMatch;
+	}
+	
 	public void addCardToHand(Card card) {
 		if(pivot < 7) {
 			hand[pivot] = card;
