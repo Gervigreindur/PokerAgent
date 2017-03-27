@@ -34,9 +34,9 @@ public class MonteCarloSimulation {
 		check = check / numberOfSimulations;
 		raise = raise / numberOfSimulations;
 		
-		System.out.println("Check: " + check + " raise: " + raise + " fold: " + fold);
+		//System.out.println("Check: " + check + " raise: " + raise );
 		
-		return Math.max(Math.max(fold, check), raise);			
+		return Math.max(check, raise);			
 	}
 	
 	public int simulateAction(State simmi, int action, int depth) {
