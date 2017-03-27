@@ -336,10 +336,9 @@ public class State {
 
 				currPlayer = new Player(playersInRound.get(0));
 				dealCards();
-					
+				currBet = 0;	
 				raise = false;
-				callCounter = 0;
-				
+				callCounter = 0;			
 			}	
 		}
 	}
@@ -457,4 +456,12 @@ public class State {
 	public ArrayList<Player> getPlayers() {
 		return playersInRound;
 	}
+
+	/**
+	 * @return the currPlayer
+	 */
+	public Player getCurrPlayer() {
+		return currPlayer;
+	}
+	
 }

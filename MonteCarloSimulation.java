@@ -36,11 +36,12 @@ public class MonteCarloSimulation {
 		check = check / numberOfSimulations;
 		raise = raise / numberOfSimulations;
 		
-		System.out.println("Check: " + check + " raise: " + raise );
+		//System.out.println("Check: " + check + " raise: " + raise );
 		double result = Math.max(check, raise);
 		System.out.println(result);
-				
-		if(myBoard.getCurrBet() - me.getCurrBet() == 0 && result < 0) {
+
+		if(myBoard.getCurrBet() - me.getCurrBet() <= 5 && result < 0) {
+
 			return 1;
 		}
 		if(result < 0) {
@@ -56,8 +57,11 @@ public class MonteCarloSimulation {
 	
 	public int simulateAction(State simmi, int action, int depth) {
 		if(depth == 0) {
-			System.out.println("depth");
-			return 1;}
+			/*System.out.println("depth");
+			System.out.println(simmi.getNumberOfPLayersInRound());
+*/
+			return 0;
+		}
 		
 		if(simmi.isTerminal()) {
 			return simmi.terminal(me);
@@ -66,27 +70,34 @@ public class MonteCarloSimulation {
 		State simulation = new State(simmi);
 		simulation.takeAction(action);
 		
-		double prob = propabilityWinPercentage(simulation);
+		
 		
 		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
-		
-		prob -= ((numberOfPeopleInRound-1) * 3.75);
-		
-		double foldProb = propabilityOfFold(prob, simulation);
-		double checkCall = propabilityOfCheckCall(prob);
-		double raise = propabilityOfRaise(prob);
-		
-		double decision = Math.max(Math.max(foldProb, checkCall), raise);
-		
-		if(decision == checkCall) {
-			return simulateAction(simulation, 1, depth-1);
+
+		if(simulation.getCurrPlayer().getID() != me.getID()) {
+			double prob = propabilityWinPercentage(simulation);
+			prob -= ((numberOfPeopleInRound-1) * 3.75);
+			
+			double foldProb = propabilityOfFold(prob, simulation);
+			double checkCall = propabilityOfCheckCall(prob);
+			double raise = propabilityOfRaise(prob);
+			
+			double decision = Math.max(Math.max(foldProb, checkCall), raise);
+			
+			if(decision == checkCall) {
+				return simulateAction(simulation, 1, depth-1);
+			}
+			else if(decision == raise) {
+				return simulateAction(simulation, 2, depth-1);
+			}
+			else if(decision == foldProb) {
+				return simulateAction(simulation, 3, depth-1);
+			}
 		}
-		else if(decision == raise) {
-			return simulateAction(simulation, 2, depth-1);
+		else {
+			return (simulateAction(simulation, 1, depth-1) + simulateAction(simulation, 2, depth-1)) / 2;
 		}
-		else if(decision == foldProb) {
-			return simulateAction(simulation, 3, depth-1);
-		}
+		
 
 		return 0;
 
