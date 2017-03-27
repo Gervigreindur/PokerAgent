@@ -6,7 +6,7 @@ public class MonteCarloSimulation {
 	
 	private Board myBoard;
 	private Player me;
-	private int result;
+
 	private int numberOfSimulations;
 	private int check;
 	private int raise;
@@ -21,10 +21,7 @@ public class MonteCarloSimulation {
 	
 	public int simulate() {
 		
-		
-	
 		for(int i = 0; i < numberOfSimulations; i++) {
-			
 			State simulation = new State(myBoard, me);
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
@@ -41,17 +38,18 @@ public class MonteCarloSimulation {
 	}
 	
 	public int simulateAction(State simmi, int action) {
-		/*
-		 * TODO: return amount bet by player.
+		
 		if(simmi.isTerminal()) {
-			
-			return 0;
+			return simmi.terminal(me);
 		}
-		*/
+		
 		State simulation = new State(simmi);
 		simulation.takeAction(action);
 		
-		double prob = propabilityWinPercentage(simulation.getCurrPlayHands(), simulation);
+		//double prob = propabilityWinPercentage(simulation.getCurrPlayHands(), simulation);
+		//double prob = propabilityWinPercentage(simulation.getCurrPlayHands());
+		double prob = 50.4;
+		
 		int numberOfPeopleInRound = simulation.getNumberOfPLayersInRound();
 		
 		prob -= (numberOfPeopleInRound * 7.75);
@@ -88,7 +86,7 @@ public class MonteCarloSimulation {
 		return(probOfWinning + getRandVal());
 	}
 	
-	private double propabilityWinPercentage(Hand hand, State simulation) {
+	private double propabilityWinPercentage(Hand hand) {
 		
 		int outsForNext = 0;
 		int numberOfCardsOnPLayer = hand.getNumberOfCardsOnPlayer();
@@ -119,10 +117,11 @@ public class MonteCarloSimulation {
 				return 22;
 			}
 		}
-		else if(numberOfCardsOnPLayer == 5)
-		{
-			
-			if(simulation.getCurrPlayHands().isRoyalFlush()) {
+		else if(numberOfCardsOnPLayer == 5) {				
+			if(hand.isRoyalFlush()) {
+				return 0;
+			}
+			if(hand.isRoyalFlush()) {
 				return 100;
 			}
 			else if(hand.isStraightFlush()) {
@@ -160,6 +159,11 @@ public class MonteCarloSimulation {
 				else if(cardOne > 7 || cardOne == 0|| cardTwo > 7 || cardTwo == 0){ //Pör yfir 7 og ásar
 					return 77.43 + outsForNext;
 				}
+				return 0;
+			}
+			if(hand.isPair()) {
+				return 0;
+
 			}
 			else {
 				return 5;
@@ -226,6 +230,7 @@ public class MonteCarloSimulation {
 			}
 		}
 		return 0;
+	
 	}
 	
 	private int getRandVal() {

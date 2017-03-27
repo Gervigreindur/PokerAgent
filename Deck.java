@@ -24,7 +24,7 @@ public class Deck {
 	Deck(Deck deck) {
 		cards = new ArrayList<Card>();
 		for(int i = 0; i < deck.cards.size(); i++) {
-			cards.add(deck.cards.get(i));
+			cards.add(new Card(deck.cards.get(i).getSuit(), deck.cards.get(i).getRank()));
 		}
 	}
 	
