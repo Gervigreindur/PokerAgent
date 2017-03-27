@@ -42,7 +42,7 @@ public class MonteCarloSimulation {
 		double result = Math.max(check, raise);
 		System.out.println(result);
 				
-		if(myBoard.getCurrBet() == 0 && result < 0) {
+		if(myBoard.getCurrBet() - me.getCurrBet() == 0 && result < 0) {
 			return 1;
 		}
 		if(result < 0) {
