@@ -141,9 +141,12 @@ public class State {
 			if(winners.isEmpty()) {
 				for(Player player : playersInRound) {
 					if(player.getID() == me.getID()) {
+						System.out.println("Winner");
 						return 1;
 					}
 					else {
+
+						System.out.println("Looser");
 						return -1;
 					}
 				}
@@ -335,7 +338,7 @@ public class State {
 
 				currPlayer = new Player(playersInRound.get(0));
 				dealCards();
-					
+				currBet = 0;	
 				raise = false;
 				callCounter = 0;
 				
