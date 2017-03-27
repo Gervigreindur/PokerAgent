@@ -33,8 +33,6 @@ public class MonteCarloSimulation {
 
 		}
 		
-		System.out.println("Check: " + check + " raise: " + raise );
-		
 		check = check / numberOfSimulations;
 		raise = raise / numberOfSimulations;
 		
@@ -70,7 +68,7 @@ public class MonteCarloSimulation {
 		
 		prob -= ((numberOfPeopleInRound-1) * 3.75);
 		
-		double foldProb = propabilityOfFold(prob);
+		double foldProb = propabilityOfFold(prob, simulation);
 		double checkCall = propabilityOfCheckCall(prob);
 		double raise = propabilityOfRaise(prob);
 		
@@ -90,8 +88,15 @@ public class MonteCarloSimulation {
 
 	}
 	
-	private double propabilityOfFold(double probOfWinning) {
-		return(100 - probOfWinning + getRandVal());
+	private double propabilityOfFold(double probOfWinning, State simulation) {
+		//System.out.println(simulation.currBet);
+		if(simulation.currBet == 0) {
+			return 0;
+		}
+		else {
+			return(100 - probOfWinning + getRandVal());
+		}
+		
 	}
 
 	private double propabilityOfCheckCall(double probOfWinning) {
@@ -180,10 +185,10 @@ public class MonteCarloSimulation {
 			else if(hand.isTwoPairs()){
 				outsForNext = 2;
 				if(cardOne < 7 && cardOne != 0 || cardTwo < 7 && cardTwo != 0) {
-					return 65.34 + outsForNext;
+					return 75.34 + outsForNext;
 				}
 				else if(cardOne > 7 || cardOne == 0|| cardTwo > 7 || cardTwo == 0){ //Pör yfir 7 og ásar
-					return 77.43 + outsForNext;
+					return 87.43 + outsForNext;
 				}
 			}				
 			else if(hand.isPair()) {

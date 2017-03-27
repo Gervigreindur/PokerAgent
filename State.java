@@ -158,7 +158,6 @@ public class State {
 				}
 			}
 		}
-		System.out.println("inní terminal() fyrir framan return 0");
 		return 0;
 		
 	}
