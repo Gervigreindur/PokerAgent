@@ -34,9 +34,11 @@ public class Hand {
 	}
 	
 	public void addCardToHand(Card card) {
-		hand[pivot] = card;
-		cardCounter[card.getRank()]++;
-		pivot++;
+		if(pivot < 7) {
+			hand[pivot] = card;
+			cardCounter[card.getRank()]++;
+			pivot++;
+		}
 	}
 	
 	public void clearHand() {
@@ -245,9 +247,11 @@ public class Hand {
 		if(firstMatch == null) {
 			if(cardCounter[12] != 0 && cardCounter[0] != 0 && cardCounter[1] != 0 && cardCounter[2] != 0 && cardCounter[3] != 0) {
 				for(Card c : hand) {
-					if( c.getRank() == 3) {
-						firstMatch = c;
-						break;
+					if(c != null) {
+						if( c.getRank() == 3) {
+							firstMatch = c;
+							break;
+						}
 					}
 				}
 			}
