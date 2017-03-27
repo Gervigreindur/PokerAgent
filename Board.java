@@ -42,7 +42,7 @@ public class Board {
 		playersInGame = new ArrayList<Player>();
 		playersInRound = new ArrayList<Player>();
 		for(Player p : board.getPlayers()) {
-			Player newPlaya = new Player(p.seeName(), p.seeStack());
+			Player newPlaya = new Player(p);
 			playersInRound.add(newPlaya);
 
 		}
