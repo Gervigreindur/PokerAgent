@@ -8,6 +8,7 @@ public class Player {
 	private int ID;
 	private boolean myTurn;
 	private int currBet;
+	private int raiseCounter;
 	
 	Player(String name, int deposit) {
 		this.name = name;
@@ -16,6 +17,7 @@ public class Player {
 		currBet = 0;
 		myTurn = false;
 		ID = -1;
+		raiseCounter = 0;
 	}
 	
 	Player(Player p) {
@@ -25,6 +27,7 @@ public class Player {
 		this.currBet = p.getCurrBet();
 		this.ID = p.getID();
 		this.myTurn = p.getMyTurn();
+		this.raiseCounter = p.getRaiseCounter();
 	}
 
 	public int getCurrBet() {
@@ -102,4 +105,20 @@ public class Player {
 	public String getInput() {
 		return null;
 	}
+
+	/**
+	 * @return the raiseCounter
+	 */
+	public int getRaiseCounter() {
+		return raiseCounter;
+	}
+
+	/**
+	 * @param raiseCounter the raiseCounter to set
+	 */
+	public void setRaiseCounter(int raiseCounter) {
+		this.raiseCounter = raiseCounter;
+	}
+	
+	
 }
