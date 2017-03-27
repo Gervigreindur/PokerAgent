@@ -463,7 +463,7 @@ public class Hand {
 		}
 		else if(isPair()) {
 			//there are 13 different pairs. the value of the pair is 100 + the rank of the pair(KK = 12, 88 = 8) plus the value of the highcard
-			Card highCard = getHighCard(firstMatch, null)
+			Card highCard = getHighCard(firstMatch, null);
 			
 			if(highCard != null) {
 				return 100 + firstMatch.getRank() + 2 + highCard.getRank() + 2;
