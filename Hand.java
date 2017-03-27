@@ -8,6 +8,7 @@ public class Hand {
 	private int pivot;
 	private Card firstMatch;
 	private Card secondMatch;
+	private Integer[] cardCounter = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	
 	public Hand() {
 		hand = new Card[7];
@@ -19,20 +20,28 @@ public class Hand {
 	public Hand(Hand hand) {
 		this.hand = new Card[7];
 		for(int i = 0; i < hand.getHand().length; i++) {
-			this.hand[i] = new Card(hand.getHand()[i].getSuit(), hand.getHand()[i].getRank());
+			if(hand.getHand()[i] != null) {
+				this.hand[i] = new Card(hand.getHand()[i].getSuit(), hand.getHand()[i].getRank());
+			}
+			else {
+				this.hand[i] = null;
+			}
 		}
 		this.pivot = hand.pivot;
 		this.firstMatch = hand.firstMatch;
 		this.secondMatch = hand.secondMatch;
+		this.cardCounter = hand.cardCounter;
 	}
 	
 	public void addCardToHand(Card card) {
 		hand[pivot] = card;
+		cardCounter[card.getRank()]++;
 		pivot++;
 	}
 	
 	public void clearHand() {
 		pivot = 0;
+		Arrays.fill(cardCounter, 0);
 		Arrays.fill(hand, null);
 	}
 	
@@ -122,16 +131,18 @@ public class Hand {
 
 	private Card getHighCard(Card first, Card second) {
 		for(int i = 0; i < hand.length; i++) {
-			if(second == null) {
-				//if 'second' is null we only have to check if the card has the same rank as 'first'
-				if(hand[i].getRank() != first.getRank()) {
-					return hand[i];
+			if(hand[i] != null) {
+				if(second == null) {
+					//if 'second' is null we only have to check if the card has the same rank as 'first'
+					if(hand[i].getRank() != first.getRank()) {
+						return hand[i];
+					}
 				}
-			}
-			else {
-				//if 'second' is not null we need to make sure that the card does not have the same rank as 'first' and 'second'
-				if(hand[i].getRank() != first.getRank() && hand[i].getRank() != second.getRank()) {
-					return hand[i];
+				else {
+					//if 'second' is not null we need to make sure that the card does not have the same rank as 'first' and 'second'
+					if(hand[i].getRank() != first.getRank() && hand[i].getRank() != second.getRank()) {
+						return hand[i];
+					}
 				}
 			}
 		}
@@ -142,10 +153,12 @@ public class Hand {
 		//Sorts from highest(A) to lowest(2)	
 		for(int i = 0; i < 7; i++) {
 			for(int j = 0; j < 7; j++) {
-				if(hand[i].getRank() > hand[j].getRank()) {
-					Card tmp = hand[i];
-					hand[i] = hand[j];
-					hand[j] = tmp;
+				if(hand[i] != null && hand[j] != null) {
+					if(hand[i].getRank() > hand[j].getRank()) {
+						Card tmp = hand[i];
+						hand[i] = hand[j];
+						hand[j] = tmp;
+					}
 				}
 			}
 		}
@@ -159,7 +172,7 @@ public class Hand {
 		firstMatch = null;
 		
 		for(int i = 0; i < hand.length - 1; i++) {
-			if(hand[i+1] != null) {
+			if(hand[i] != null && hand[i+1] != null) {
 				if(hand[i].getRank() == hand[i+1].getRank()) {
 					firstMatch = hand[i];
 					break;
@@ -176,13 +189,15 @@ public class Hand {
 		secondMatch = null;
 		
 		for(int i = 0; i < hand.length - 1; i++) {
-			if(hand[i].getRank() == hand[i+1].getRank()) {
-				if(firstMatch == null) {
-					firstMatch = hand[i];
-				}
-				else {
-					secondMatch = hand[i];
-					break;
+			if(hand[i] != null && hand[i+1] != null) {
+				if(hand[i].getRank() == hand[i+1].getRank()) {
+					if(firstMatch == null) {
+						firstMatch = hand[i];
+					}
+					else {
+						secondMatch = hand[i];
+						break;
+					}
 				}
 			}
 		}
@@ -194,9 +209,11 @@ public class Hand {
 		firstMatch = null;
 		
 		for(int i = 0; i < hand.length - 2; i++) {
-			if(hand[i].getRank() == hand[i+1].getRank() && hand[i].getRank() == hand[i+2].getRank()) {
-				firstMatch = hand[i];
-				break;
+			if(hand[i] != null && hand[i+1] != null && hand[i+2] != null) {
+				if(hand[i].getRank() == hand[i+1].getRank() && hand[i].getRank() == hand[i+2].getRank()) {
+					firstMatch = hand[i];
+					break;
+				}
 			}
 		}
 		
@@ -211,19 +228,30 @@ public class Hand {
 		dupRemoved.add(hand[0]);
 		
 		for(int i = 1; i < hand.length; i++) {
-			if(hand[i].getRank() != dupRemoved.get(dupRemoved.size()-1).getRank()) {
-				dupRemoved.add(hand[i]);
+			if(hand[i] != null) {
+				if(hand[i].getRank() != dupRemoved.get(dupRemoved.size()-1).getRank()) {
+					dupRemoved.add(hand[i]);
+				}
 			}
 		}
 		
 		if(dupRemoved.size() < 5) {
 			return false;
 		}
-
-		//TODO:
-		//Bæta viğ svo A 2 3 4 5 geti veriğ röğ
 		
 		getStraight(dupRemoved);
+		
+		//checking for a straight 5 high i no straight was found
+		if(firstMatch == null) {
+			if(cardCounter[12] != 0 && cardCounter[0] != 0 && cardCounter[1] != 0 && cardCounter[2] != 0 && cardCounter[3] != 0) {
+				for(Card c : hand) {
+					if( c.getRank() == 3) {
+						firstMatch = c;
+						break;
+					}
+				}
+			}
+		}
 		
 		return firstMatch != null;
 	}
@@ -242,28 +270,30 @@ public class Hand {
 		
 		
 		for(int i = 0; i < hand.length; i++) {
-			if(hand[i].getSuit() == 0) {
-				hearts++;
-				if(heart == null) {
-					heart = hand[i];
+			if(hand[i] != null) {
+				if(hand[i].getSuit() == 0) {
+					hearts++;
+					if(heart == null) {
+						heart = hand[i];
+					}
 				}
-			}
-			else if(hand[i].getSuit() == 1) {
-				spades++;
-				if(spade == null) {
-					spade = hand[i];
+				else if(hand[i].getSuit() == 1) {
+					spades++;
+					if(spade == null) {
+						spade = hand[i];
+					}
 				}
-			}
-			else if(hand[i].getSuit() == 2) {
-				diamonds++;
-				if(diamond == null) {
-					diamond = hand[i];
+				else if(hand[i].getSuit() == 2) {
+					diamonds++;
+					if(diamond == null) {
+						diamond = hand[i];
+					}
 				}
-			}
-			else if(hand[i].getSuit() == 3) {
-				clubs++;
-				if(club == null) {
-					club = hand[i];
+				else if(hand[i].getSuit() == 3) {
+					clubs++;
+					if(club == null) {
+						club = hand[i];
+					}
 				}
 			}
 		}
@@ -290,9 +320,11 @@ public class Hand {
 		
 		if(isThreeOfKind()) {
 			for(int i = 0; i < hand.length - 1; i++) {
-				if(hand[i].getRank() == hand[i+1].getRank() && hand[i].getRank() != firstMatch.getRank()) {
-					secondMatch = hand[i];
-					break;
+				if(hand[i] != null && hand[i+1] != null) {
+					if(hand[i].getRank() == hand[i+1].getRank() && hand[i].getRank() != firstMatch.getRank()) {
+						secondMatch = hand[i];
+						break;
+					}
 				}
 			}
 		}
@@ -304,9 +336,11 @@ public class Hand {
 		firstMatch = null;
 		
 		for(int i = 0; i < hand.length - 3; i++) {
-			if(hand[i].getRank() == hand[i+1].getRank() && hand[i+1].getRank() == hand[i+2].getRank() && hand[i+2].getRank() == hand[i+3].getRank()) {
-				firstMatch = hand[i];
-				break;
+			if(hand[i] != null && hand[i+1] != null && hand[i+2] != null && hand[i+3] != null) {
+				if(hand[i].getRank() == hand[i+1].getRank() && hand[i+1].getRank() == hand[i+2].getRank() && hand[i+2].getRank() == hand[i+3].getRank()) {
+					firstMatch = hand[i];
+					break;
+				}
 			}
 		}
 		return firstMatch != null;
@@ -321,17 +355,19 @@ public class Hand {
 		ArrayList<Card> clubs = new ArrayList<Card>();
 		
 		for(int i = 0; i < hand.length; i++) {
-			if(hand[i].getSuit() == 0) {
-				hearts.add(hand[i]);
-			}
-			else if(hand[i].getSuit() == 1) {
-				spades.add(hand[i]);
-			}
-			else if(hand[i].getSuit() == 2) {
-				diamonds.add(hand[i]);
-			}
-			else if(hand[i].getSuit() == 3) {
-				clubs.add(hand[i]);
+			if(hand[i] != null) {
+				if(hand[i].getSuit() == 0) {
+					hearts.add(hand[i]);
+				}
+				else if(hand[i].getSuit() == 1) {
+					spades.add(hand[i]);
+				}
+				else if(hand[i].getSuit() == 2) {
+					diamonds.add(hand[i]);
+				}
+				else if(hand[i].getSuit() == 3) {
+					clubs.add(hand[i]);
+				}
 			}
 		}
 		
@@ -359,13 +395,15 @@ public class Hand {
 	
 	public void getStraight(ArrayList<Card> tmpHand) {
 		for(int i = 0; i <= tmpHand.size() - 5; i++) {
-			if(tmpHand.get(i).getRank()-1 == tmpHand.get(i+1).getRank() &&
-					tmpHand.get(i+1).getRank()-1 == tmpHand.get(i+2).getRank() &&
-				tmpHand.get(i+2).getRank()-1 == tmpHand.get(i+3).getRank() &&
-				tmpHand.get(i+3).getRank()-1 == tmpHand.get(i+4).getRank()) {
-					firstMatch = tmpHand.get(i);
-					break;
-				}
+			if(i+4 <= tmpHand.size()-5) {
+				if(tmpHand.get(i).getRank()-1 == tmpHand.get(i+1).getRank() &&
+						tmpHand.get(i+1).getRank()-1 == tmpHand.get(i+2).getRank() &&
+					tmpHand.get(i+2).getRank()-1 == tmpHand.get(i+3).getRank() &&
+					tmpHand.get(i+3).getRank()-1 == tmpHand.get(i+4).getRank()) {
+						firstMatch = tmpHand.get(i);
+						break;
+					}
+			}
 		}
 	}
 }

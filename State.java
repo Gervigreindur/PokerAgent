@@ -76,7 +76,7 @@ public class State {
 		smallBlind = 5;
 		bigBlind = 10;
 		currBet = board.currBet;
-		deck = new Deck();
+		deck = new Deck(board.deck);
 		preFlop = board.preFlop;
 		flop = board.flop;
 		turn = board.turn;
@@ -175,8 +175,10 @@ public class State {
 	private boolean cardsExist(Card c, Player agent) {
 		
 		for(int i = 0; i < agent.getHand().getHand().length; i++) {
-			if(c.equals(agent.getHand().getHand()[i])) {
-				return true;
+			if(agent.getHand().getHand()[i] != null) {
+				if(c.equals(agent.getHand().getHand()[i])) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -190,7 +192,7 @@ public class State {
 				while(counter <= 2) {
 					Card c = deck.drawFromDeck();
 					if(!cardsExist(c, agent)) {
-						player.recievesCards(deck.drawFromDeck());
+						player.recievesCards(c);
 						counter++;
 					}
 				}			
@@ -213,11 +215,15 @@ public class State {
 		ArrayList<Card> takenCards = new ArrayList<Card>();
 		for(Player p : playersInRound) {
 			for(int i = 0; i < 2; i++) {
-				takenCards.add(new Card(p.getHand().getHand()[i].getSuit(), p.getHand().getHand()[i].getRank()));
+				if(p.getHand().getHand()[i] != null) {
+					takenCards.add(new Card(p.getHand().getHand()[i].getSuit(), p.getHand().getHand()[i].getRank()));
+				}
 			}
 		}
 		for(int i = 2; i < currPlayer.getHand().getHand().length; i++) {
-			takenCards.add(new Card(currPlayer.getHand().getHand()[i].getSuit(), currPlayer.getHand().getHand()[i].getRank()));
+			if(currPlayer.getHand().getHand()[i] != null) {
+				takenCards.add(new Card(currPlayer.getHand().getHand()[i].getSuit(), currPlayer.getHand().getHand()[i].getRank()));
+			}
 		}
 		
 		

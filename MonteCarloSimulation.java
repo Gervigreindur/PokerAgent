@@ -25,8 +25,8 @@ public class MonteCarloSimulation {
 			State simulation = new State(myBoard, me);
 			simulation.simulateOpponentsHands(me);
 			//simulation.dealCards();
-			check += simulateAction(simulation, 1);
-			raise += simulateAction(simulation, 2);
+			check += simulateAction(simulation, 1, 100);
+			raise += simulateAction(simulation, 2, 100);
 			
 		}
 		
@@ -37,7 +37,8 @@ public class MonteCarloSimulation {
 			
 	}
 	
-	public int simulateAction(State simmi, int action) {
+	public int simulateAction(State simmi, int action, int depth) {
+		if(depth == 0) {return 0;}
 		
 		if(simmi.isTerminal()) {
 			return simmi.terminal(me);
@@ -59,18 +60,16 @@ public class MonteCarloSimulation {
 		double decision = Math.max(Math.max(foldProb, checkCall), raise);
 		
 		if(decision == checkCall) {
-			return simulateAction(simulation, 1);
+			return simulateAction(simulation, 1, depth-1);
 		}
 		else if(decision == raise) {
-			return simulateAction(simulation, 2);
+			return simulateAction(simulation, 2, depth-1);
 		}
 		else if(decision == foldProb) {
-			return simulateAction(simulation, 3);
+			return simulateAction(simulation, 3, depth-1);
 		}
 
 		return 0;
-		
-
 	}
 	
 	private double propabilityOfFold(double probOfWinning) {		

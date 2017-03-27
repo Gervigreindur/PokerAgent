@@ -69,6 +69,9 @@ public class Board {
 		if(playersInGame.size() > 1) {
 			return true;
 		}
+		else if(playersInGame.size() == 1) {
+			System.out.println("Congratulations " + playersInGame.get(0).seeName() + ", you won!");
+		}
 		return false;
 	}
 
@@ -197,9 +200,20 @@ public class Board {
 		//Round ends reset for next round..
 		rearrangePlayers();
 		
-		//empty each players hand
+		//empty each players hand and remove players who have lost all money and remove Allin marks
+		ArrayList<Player> toRemove = new ArrayList<Player>();
+		
 		for(Player p : playersInGame) {
-			p.emptyHand();
+			if(p.seeStack() == 0) {
+				toRemove.add(p);
+			}
+			else {
+				p.emptyHand();
+			}
+		}
+		
+		for(Player p : toRemove) {
+			playersInGame.remove(p);
 		}
 		
 		pot = 0;
@@ -265,13 +279,29 @@ public class Board {
 	private void placeBlinds() {
 		System.out.println("Big blind : " + playersInGame.get(playersInRound.size() - 1).seeName() + "\nSmall blind : " + playersInGame.get(playersInRound.size() - 2).seeName() + "\n");
 
-		int bb = playersInRound.size() - 1;
-		int sb = playersInRound.size() - 2;
-		playersInRound.get(bb).madeBet(bigBlind);
-		playersInRound.get(sb).madeBet(smallBlind);
+		int bb = bigBlind;
+		int sb = smallBlind;
 		
-		currBet = bigBlind;
-		pot = bigBlind + smallBlind;
+		Player BB = playersInRound.get(playersInRound.size() - 1);
+		Player SB = playersInRound.get(playersInRound.size() - 2);
+		
+		if(BB.seeStack() >= bigBlind) {
+			BB.madeBet(bigBlind);
+		}
+		else {
+			currBet = BB.seeStack();
+			bb = currBet;
+			BB.madeBet(currBet);
+		}
+		if(SB.seeStack() >= smallBlind) {
+			SB.madeBet(smallBlind);
+		}
+		else {
+			sb = SB.seeStack();
+			SB.madeBet(sb);
+		}
+		
+		pot = bb + sb;
 		System.out.println("BLINDS PLACED");
 	}
 
@@ -291,39 +321,65 @@ public class Board {
 		while(betCounter < players) {
 			for(int i = 0; i < playersInRound.size() ; i++) {
 				Player currPlayer = playersInRound.get(i);
-				System.out.println("pot size is: " + pot);
-				System.out.println(currPlayer.seeName() + ", place your bets..\n1 to check/call\t\t2 to raise\t\t3 to fold");
-				
-				String playerChoice = currPlayer.getInput();
-
-				if(playerChoice.equals("2")) {
-					//raise
-					System.out.println(currPlayer.seeName() + " raised " + bigBlind + "$");
-					currBet += bigBlind;
-					currPlayer.madeBet(bigBlind);
-					pot += bigBlind;
-					betMade = true;
-					betCounter = 1;
-				}
-				else if(playerChoice.equals("3")) {
-					//fold
-					System.out.println(currPlayer.seeName() + " folded");
-					playersInRound.remove(playersInRound.indexOf(currPlayer));
-					i--;
-					players--;
-				}
-				else {
-					//check/call
-					if(betMade) {
-						//call
-						int diff = currBet - currPlayer.getCurrBet();
-						currPlayer.madeBet(diff);
+				if(!currPlayer.getAllIn()) {
+					System.out.println("pot size is: " + pot);
+					System.out.println(currPlayer.seeName() + ", place your bets..\n1 to check/call\t\t2 to raise\t\t3 to fold");
+					
+					String playerChoice = currPlayer.getInput();
+	
+					if(playerChoice.equals("2")) {
+						//raise
+						if(currPlayer.seeStack() >= bigBlind) {
+							System.out.println(currPlayer.seeName() + " raised " + bigBlind + "$");
+							currBet += bigBlind;
+							if(currPlayer.seeStack() == bigBlind) {
+								System.out.println("All in!");
+							}
+							currPlayer.madeBet(bigBlind);
+							pot += bigBlind;
+						}
+						else if(currPlayer.seeStack() < bigBlind) {
+							int amount = currPlayer.seeStack();
+							System.out.println(currPlayer.seeName() + " raised " + amount + "$");
+							currBet += amount;
+							currPlayer.madeBet(amount);
+							pot += amount;
+							System.out.println("All in!");
+						}
 						
-						pot += diff;
-						System.out.println(currPlayer.seeName() + " called " + diff + "$");
+						betMade = true;
+						betCounter = 1;
 					}
-					else {System.out.println(currPlayer.seeName() + " checked");} //check
-					betCounter++;
+					else if(playerChoice.equals("3")) {
+						//fold
+						System.out.println(currPlayer.seeName() + " folded");
+						playersInRound.remove(playersInRound.indexOf(currPlayer));
+						i--;
+						players--;
+					}
+					else {
+						//check/call
+						if(betMade) {
+							//call
+							int diff = currBet - currPlayer.getCurrBet();
+							if(currPlayer.seeStack() < diff) {
+								diff = currPlayer.seeStack();
+							}
+							
+							System.out.println(currPlayer.seeName() + " called " + diff + "$");
+							if(currPlayer.seeStack() == diff) {
+								System.out.println("All in!");
+							}
+							currPlayer.madeBet(diff);
+							pot += diff;
+						}
+						else {System.out.println(currPlayer.seeName() + " checked");} //check
+						betCounter++;
+					}
+				}
+				else { 
+					System.out.println(currPlayer.seeName() + " is all in already");
+					betCounter++; 
 				}
 				System.out.println("------");
 				if(betCounter == players) { break; }
