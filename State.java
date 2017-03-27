@@ -87,7 +87,7 @@ public class State {
 		flop = board.flop;
 		turn = board.turn;
 		river = board.river;
-	
+
 	}
 	
 	public boolean isTerminal() {
@@ -102,7 +102,10 @@ public class State {
 				}
 			}
 			return true;
+
 		}			
+				
+
 		return false;
 	}
 	
