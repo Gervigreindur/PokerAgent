@@ -48,16 +48,19 @@ public class State {
 		for(Player p : board.getPlayers()) {
 			Player newPlaya = new Player(p);
 			playersInRound.add(newPlaya);
+			
 			if(p.getCurrBet() > highestBet) {
 				highestBet = p.getCurrBet();
 			}
 		}
 		
-		callCounter = playersInRound.size();
+		callCounter = 0;
 		//TODO Fix BB pre flop call counter bug.
 		for(int i = 0; i < playersInRound.size(); i++) {
 			if(playersInRound.get(i).getCurrBet() == highestBet) {
-				callCounter--;
+				if(highestBet != bigBlind && !board.preFlop) {
+					callCounter++;
+				}			
 			}
 		}
 		
@@ -186,8 +189,9 @@ public class State {
 	
 	public void simulateOpponentsHands(Player agent) {
 		
-		for(Player player : playersInRound) {
+		for(Player player : playersInRound) {			
 			if(player.getID() != agent.getID()) {
+				player.emptyHand();
 				int counter = 0;
 				while(counter <= 2) {
 					Card c = deck.drawFromDeck();
@@ -311,7 +315,7 @@ public class State {
 	
 	private void changeState() {
 		//TODO remember the pre flop BB call counter bug
-		if(callCounter == playersInRound.size() - 1) {
+		if((raise && callCounter == playersInRound.size() -1) || (!raise && callCounter == playersInRound.size())) {
 		
 			if(preFlop) {
 				preFlop = false;
@@ -325,6 +329,7 @@ public class State {
 				turn = false;
 				river = true;
 			}
+			currPlayer = new Player(playersInRound.get(0));
 			dealCards();
 				
 			raise = false;
