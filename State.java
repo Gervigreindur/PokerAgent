@@ -55,7 +55,7 @@ public class State {
 		}
 		
 
-		/*callCounter = playersInRound.size();
+		callCounter = playersInRound.size();
 		callCounter = 0;
 
 		//TODO Fix BB pre flop call counter bug.
@@ -65,7 +65,14 @@ public class State {
 					callCounter++;
 				}			
 			}
-		}*/
+		}
+		
+		if(callCounter == 0) {
+			raise = false;
+		}
+		else {
+			raise = true;
+		}
 		
 		
 		
@@ -74,8 +81,6 @@ public class State {
 			table[i] = new Card(board.getTable()[i].getSuit(), board.getTable()[i].getRank());
 		}
 		*/
-		
-		raise = false;
 		
 		this.currPlayer = new Player(currentPlayer);
 		pot = board.pot;
@@ -96,7 +101,8 @@ public class State {
 			return true;
 		}
 		else if(river) {
-			//System.out.println("river Is terminal");
+			
+			
 			for(Player p : playersInRound) {
 				if(p.getCurrBet() != currBet) {
 					return false;
@@ -125,6 +131,7 @@ public class State {
 			}
 		}
 		else if(river) {
+			//System.out.println("river Is terminal");
 			int best = -1;
 			ArrayList<Player> winners = new ArrayList<Player>();
 			//Evaluate best hand 
