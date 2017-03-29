@@ -15,6 +15,7 @@ public class Board {
 	private int bigBlind, smallBlind; 
 	protected int size, pot, currBet;
 	private int handsPlayed; //uppá að hækka blinds eftir einhvern tíma...?
+	private boolean imPlaying;
 
 	public Board(int size) {
 		if(size > 8) {
@@ -37,6 +38,7 @@ public class Board {
 		deck = new Deck();
 		preFlop = true;
 		flop = turn = river = false;
+		imPlaying = true;
 	}
 	
 	public Board(Board board) {
@@ -80,19 +82,21 @@ public class Board {
 	}
 
 	public void play() {
-		InputStream ble = System.in;
-		try {
-			int bla = ble.read();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(imPlaying) {
+			InputStream ble = System.in;
+			try {
+				int bla = ble.read();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		while(true) {
 			if(preFlop) {
 				//Preflop---------------------------------------------------------
 				handsPlayed++;
-				System.out.println("PLAYING HAND #" + handsPlayed);
-				System.out.println("PREFLOP STARTED");
+				System.out.println("PLAYING HAND #" + handsPlayed + "\nBlinds are " + bigBlind + " and " + smallBlind);
+				System.out.println("PREFLOP STARTED\n");
 				deck.shuffle();
 				//deck.getAllCards();
 				
@@ -101,14 +105,16 @@ public class Board {
 					player.recievesCards(deck.drawFromDeck());
 					player.recievesCards(deck.drawFromDeck());
 					
-					System.out.println(player.seeName() + "'s cards: \t\t" + player.seeCards());
+					if(player.seeName() == "Chuck Norris") {
+						System.out.println("my cards: " + player.seeCards());
+					}
 				}
 				
 				playersInRound.addAll(playersInGame);
 				initializeCurrBetsMadeByPlayer();
 				placeBlinds();
 				placeBets(true);
-				System.out.println("PREFLOP ENDED");
+				//System.out.println("PREFLOP ENDED\n");
 				
 				if(checkForWinner()) {
 					break;
@@ -118,7 +124,7 @@ public class Board {
 			}
 			else if(flop) {
 				//flop-----------------------------------------------------------
-				System.out.println("FLOP STARTED");
+				System.out.println("FLOP STARTED\n");
 				//the cards in flop are added to each player's hand and the the Board stores the table each time...
 				Card card1 = deck.drawFromDeck();
 				Card card2 = deck.drawFromDeck();
@@ -131,7 +137,10 @@ public class Board {
 					p.recievesCards(card1);
 					p.recievesCards(card2);
 					p.recievesCards(card3);
-					System.out.println(p.seeName() + "'s cards: \t\t" + p.seeCards());
+
+					if(p.seeName() == "Chuck Norris") {
+						System.out.println("my cards: " + p.seeCards());
+					}
 				}
 				System.out.print("Table:: ");
 				for(int i = 0; i < 3; i++) {
@@ -141,7 +150,7 @@ public class Board {
 				
 				initializeCurrBetsMadeByPlayer();
 				placeBets(false);
-				System.out.println("FLOP ENDED");
+				//System.out.println("FLOP ENDED\n");
 				flop = false;
 				if(checkForWinner()) {
 					preFlop = true;
@@ -151,12 +160,15 @@ public class Board {
 			}
 			else if(turn) {
 				//turn-----------------------------------------------------------
-				System.out.println("TURN STARTED");
+				System.out.println("TURN STARTED\n");
 				Card card4 = deck.drawFromDeck();
 				table[3] = card4;
 				for(Player p : playersInRound) {
 					p.recievesCards(card4);
-					System.out.println(p.seeName() + "'s cards: \t\t" + p.seeCards());
+
+					if(p.seeName() == "Chuck Norris") {
+						System.out.println("my cards: " + p.seeCards());
+					}
 				}
 				System.out.print("Table:: ");
 				for(int i = 0; i < 4; i++) {
@@ -166,7 +178,7 @@ public class Board {
 				
 				initializeCurrBetsMadeByPlayer();
 				placeBets(false);
-				System.out.println("TURN ENDED");
+				//System.out.println("TURN ENDED\n");
 				turn = false;
 				if(checkForWinner()) {
 					preFlop = true;
@@ -176,12 +188,15 @@ public class Board {
 			}
 			else if(river) {
 				//river----------------------------------------------------------
-				System.out.println("RIVER STARTED");
+				System.out.println("RIVER STARTED\n");
 				Card card5 = deck.drawFromDeck();
 				table[4] = card5;
 				for(Player p : playersInRound) {
 					p.recievesCards(card5);
-					System.out.println(p.seeName() + "'s cards: \t\t" + p.seeCards());
+					
+					if(p.seeName() == "Chuck Norris") {
+						System.out.println("my cards: " + p.seeCards());
+					}
 				}
 				
 				System.out.print("Table:: ");
@@ -192,7 +207,7 @@ public class Board {
 				System.out.println("");
 				initializeCurrBetsMadeByPlayer();
 				placeBets(false);
-				System.out.println("RIVER ENDED");
+				//System.out.println("RIVER ENDED\n");
 				
 				preFlop = true;
 				if(checkForWinner()) {
@@ -200,6 +215,8 @@ public class Board {
 					break;
 				}
 			}
+			
+			System.out.println("\n");
 		}
 		//Round ends reset for next round..
 		rearrangePlayers();
@@ -209,6 +226,7 @@ public class Board {
 		
 		for(Player p : playersInGame) {
 			if(p.getAllIn()) {
+				if(p.seeName() == "Chuck Norris") { System.out.println("Sorry, your are out!!"); imPlaying = false;}
 				toRemove.add(p);
 			}
 			else {
@@ -226,16 +244,43 @@ public class Board {
 	}
 
 	private boolean checkForWinner() {
-		System.out.println("CHECKING FOR WINNER");
+		//System.out.println("CHECKING FOR WINNER");
 		if(playersInRound.size() == 1) {
+			System.out.println("\n");
+			for(Player p : playersInRound) {
+				System.out.println(p.seeName() + "'s cards :" + p.seeCards());
+			}
+			for(int i = 0; i < 3; i++) {
+				System.out.print(table[i] + " - ");
+			}
+			
 			for(Player player : playersInRound) {
 				player.addPot(pot);
 				System.out.println(player.seeName() + " won " + pot + "$, Congratulations");
 			}
 			
+			System.out.println("\n");
+			for(Player p : playersInGame) {
+				if(!p.seeName().equals("Chuck Norris")) {
+					System.out.println(p.seeName() + " holds a stack of " + p.seeStack());
+				}
+				else {
+					System.out.println("You hold a stack of " + p.seeStack());
+				}
+			}
+			System.out.println("\n");
+			
 			return true;
 		}
 		else if(river) {
+			System.out.println("\n");
+			for(Player p : playersInRound) {
+				System.out.println(p.seeName() + "'s cards :" + p.seeCards());
+			}
+			for(int i = 0; i < 3; i++) {
+				System.out.print(table[i] + " - ");
+			}
+			
 			int best = -1;
 			int winnerID = -1;
 			ArrayList<Player> winners = new ArrayList<Player>();
@@ -256,6 +301,17 @@ public class Board {
 			if(winners.size() == 1) {
 					winners.get(0).addPot(pot);
 					System.out.println(winners.get(0).seeName() + " won " + pot + "$, Congratulations");
+					
+					System.out.println("\n");
+					for(Player p : playersInGame) {
+						if(!p.seeName().equals("Chuck Norris")) {
+							System.out.println(p.seeName() + " holds a stack of " + p.seeStack());
+						}
+						else {
+							System.out.println("You hold a stack of " + p.seeStack());
+						}
+					}
+					System.out.println("\n");
 					return true;
 			}
 			
@@ -265,6 +321,17 @@ public class Board {
 				System.out.println(player.seeName() + " splits the pot and gets " + potDivided + "$ from total pot: " + pot + ", Congratulations");
 				player.addPot(potDivided);
 			}
+			
+			System.out.println("\n");
+			for(Player p : playersInGame) {
+				if(!p.seeName().equals("Chuck Norris")) {
+					System.out.println(p.seeName() + " holds a stack of " + p.seeStack());
+				}
+				else {
+					System.out.println("You hold a stack of " + p.seeStack());
+				}
+			}
+			System.out.println("\n");
 			
 			return true;
 		}
@@ -332,14 +399,26 @@ public class Board {
 				Player currPlayer = playersInRound.get(i);
 				if(!currPlayer.getAllIn()) {
 					System.out.println("pot size is: " + pot);
-					System.out.println(currPlayer.seeName() + ", place your bets..\n1 to check/call\t\t2 to raise\t\t3 to fold");
+					
+					if(currPlayer.seeName() == "Chuck Norris") {
+						System.out.println("Your stack holds: " + currPlayer.seeStack());
+					}
+					
+					int diff = currBet - currPlayer.getCurrBet();
+					
+					if(betMade && diff != 0) {
+						System.out.println(currPlayer.seeName() + ", place your bets..\n1 to call " + diff + "\t\t2 to raise\t\t3 to fold");
+					}
+					else {
+						System.out.println(currPlayer.seeName() + ", place your bets..\n1 to check\t\t2 to raise\t\t3 to fold");
+					}
 					
 					String playerChoice = currPlayer.getInput();
 	
 					if(playerChoice.equals("2")) {
 						//raise
 						if(currPlayer.seeStack() >= bigBlind) {
-							System.out.println(currPlayer.seeName() + " raised " + bigBlind + "$");
+							System.out.println("\t\t\t\t\t\t\t\t" + currPlayer.seeName() + " raised " + bigBlind + "$");
 							currBet += bigBlind;
 							if(currPlayer.seeStack() == bigBlind) {
 								System.out.println("All in!");
@@ -349,11 +428,11 @@ public class Board {
 						}
 						else if(currPlayer.seeStack() < bigBlind) {
 							int amount = currPlayer.seeStack();
-							System.out.println(currPlayer.seeName() + " raised " + amount + "$");
+							System.out.println("\t\t\t\t\t\t\t\t" + currPlayer.seeName() + " raised " + amount + "$");
 							currBet += amount;
 							currPlayer.madeBet(amount);
 							pot += amount;
-							System.out.println("All in!");
+							System.out.println("\t\t\t\t\t\t\t\t" + "All in!");
 						}
 						
 						betMade = true;
@@ -361,28 +440,27 @@ public class Board {
 					}
 					else if(playerChoice.equals("3")) {
 						//fold
-						System.out.println(currPlayer.seeName() + " folded");
+						System.out.println("\t\t\t\t\t\t\t\t" + currPlayer.seeName() + " folded");
 						playersInRound.remove(playersInRound.indexOf(currPlayer));
 						i--;
 						players--;
 					}
 					else {
 						//check/call
-						if(betMade) {
+						if(betMade && diff != 0) {
 							//call
-							int diff = currBet - currPlayer.getCurrBet();
 							if(currPlayer.seeStack() < diff) {
 								diff = currPlayer.seeStack();
 							}
 							
-							System.out.println(currPlayer.seeName() + " called " + diff + "$");
+							System.out.println("\t\t\t\t\t\t\t\t" + currPlayer.seeName() + " called " + diff + "$");
 							if(currPlayer.seeStack() == diff) {
 								System.out.println("All in!");
 							}
 							currPlayer.madeBet(diff);
 							pot += diff;
 						}
-						else {System.out.println(currPlayer.seeName() + " checked");} //check
+						else {System.out.println("\t\t\t\t\t\t\t\t" + currPlayer.seeName() + " checked");} //check
 						betCounter++;
 					}
 					if(currPlayer.getAllIn()) { players--; }
@@ -396,9 +474,9 @@ public class Board {
 		
 		//Remove after testing============================================
 		System.out.println("Pot size is now " + pot);
-		for(Player p : playersInGame) {
+		/*for(Player p : playersInGame) {
 			System.out.println(p.seeName() + " now has " + p.seeStack());
-		}
+		}*/
 		System.out.println("");
 		//================================================================
 		

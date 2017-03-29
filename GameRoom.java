@@ -8,10 +8,10 @@ public class GameRoom {
 		
 		Board board = new Board(8);
 
-		board.addPlayer(new Agent("Gisli", buyIn, board));
-		board.addPlayer(new Agent("Steini", buyIn, board));
-		board.addPlayer(new Agent("Vedis", buyIn, board));
-		board.addPlayer(new Agent("Einir", buyIn, board));
+		board.addPlayer(new Agent("Terminator", buyIn, board));
+		board.addPlayer(new RandomAgent("Spongebob", buyIn, board));
+		board.addPlayer(new Human("Chuck Norris", buyIn));
+		//board.addPlayer(new Agent("Einir", buyIn, board));
 
 		
 		while(board.isActive()) {

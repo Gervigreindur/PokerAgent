@@ -143,17 +143,16 @@ public class State {
 				if(value > best) {
 					best = value;
 					winners.clear();
+					winners.add(player);
 				}
 			}
 			
-			if(winners.isEmpty()) {
-				for(Player player : playersInRound) {
-					if(player.getID() == me.getID()) {					
-						return 1;
-					}
-					else {
-						return -1;
-					}
+			if(winners.size() == 1) {
+				if(winners.get(0).getID() == me.getID()) {					
+					return 1;
+				}
+				else {
+					return -1;
 				}
 			}
 			// If we need to divide the pot 
@@ -356,113 +355,7 @@ public class State {
 			}	
 		}
 	}
-/*
-	private boolean checkForWinner() {
-		//System.out.println("CHECKING FOR WINNER");
-		if(playersInRound.size() == 1) {
-			for(Player player : playersInRound) {
-				player.addPot(pot);
-			}
-			
-			return true;
-		}
-		else if(river) {
-			int best = -1;
-			int winnerID = -1;
-			ArrayList<Player> winners = new ArrayList<Player>();
-			//Evaluate best hand 
-			for(Player player : playersInRound) {
-				int value = player.getHandValue();
-				if(value == best) {
-					winners.add(player);
-				}
-				if(value > best) {
-					winnerID = player.getID();
-					best = value;
-					winners.clear();
-				}
-			}
-			
-			if(winners.isEmpty()) {
-				for(Player player : playersInRound) {
-					if(player.getID() == winnerID) {
-						player.addPot(pot);
-						return true;
-					}
-				}
-			}
-			// If we need to divide the pot 
-			int potDivided = pot / winners.size();
-			for(Player player : winners) {
-				player.addPot(potDivided);
-			}
-			
-			return true;
-		}
-		
-		return false;
-	}
-*/
-/*
-	private void placeBets(boolean betMade) {
-		if(playersInRound.isEmpty()) {
-			playersInRound.addAll(playersInGame);
-		}
-		
-		int players = playersInRound.size();
-		int betCounter = 0;
-		
-		while(betCounter < players) {
-			for(int i = 0; i < playersInRound.size() ; i++) {
-				Player currPlayer = playersInRound.get(i);
-				//System.out.println("pot size is: " + pot);
-				//System.out.println(currPlayer.seeName() + ", place your bets..\n1 to check/call\t\t2 to raise\t\t3 to fold");
-				
-				String playerChoice = currPlayer.getInput();
 
-				if(playerChoice.equals("2")) {
-					//raise
-					//System.out.println(currPlayer.seeName() + " raised " + bigBlind + "$");
-					currBet += bigBlind;
-					currBetsMadeByPlayer[currPlayer.getID()] += bigBlind;
-					currPlayer.madeBet(bigBlind);
-					pot += bigBlind;
-					betMade = true;
-					betCounter = 1;
-				}
-				else if(playerChoice.equals("3")) {
-					//fold
-					//System.out.println(currPlayer.seeName() + " folded");
-					playersInRound.remove(playersInRound.indexOf(currPlayer));
-					i--;
-					players--;
-				}
-				else {
-					//check/call
-					if(betMade) {
-						//call
-						int diff = currBet - currBetsMadeByPlayer[currPlayer.getID()];
-						currPlayer.madeBet(diff);
-						currBetsMadeByPlayer[currPlayer.getID()] = currBet;
-						pot += diff;
-						//System.out.println(currPlayer.seeName() + " called " + diff + "$");
-					}
-					//else {//System.out.println(currPlayer.seeName() + " checked");} //check
-					betCounter++;
-				}
-				//System.out.println("------");
-				if(betCounter == players) { break; }
-			}
-		}
-		
-		currBet = 0;
-	}
-	*/
-	/*
-	public Card[] getTable() {
-		return table;
-	}
-	*/
 	public State getState() {
 		return this;
 	}
